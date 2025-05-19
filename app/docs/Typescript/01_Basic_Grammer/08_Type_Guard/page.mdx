@@ -1,0 +1,169 @@
+# 08. 🟦 사용자 정의 타입 가드
+
+## 📌 0.typeof, instanceof?
+
+### 🔍 1. typeof
+
+✅ 개념:
+기본 타입(number, string, boolean, undefined, symbol, bigint, function, object)을 구분할 수 있음
+
+원시 값(primitive value)에 주로 사용
+
+```ts
+typeof 123; // "number"
+typeof "hello"; // "string"
+typeof true; // "boolean"
+typeof undefined; // "undefined"
+typeof Symbol(); // "symbol"
+typeof BigInt(1); // "bigint"
+typeof function () {}; // "function"
+typeof {}; // "object"
+typeof null; // "object" ❗️ (버그이자 역사적 유산)
+```
+
+### 🔍 2. instanceof
+
+✅ 개념:
+객체가 어떤 생성자 함수의 인스턴스인지 확인할 때 사용
+
+프로토타입 체인을 따라 확인
+
+✅ 사용 예:
+
+```ts
+	class Person {}
+	const p = new Person();
+
+	p instanceof Person  // true
+	[] instanceof Array  // true
+	[] instanceof Object // true (Array는 Object를 상속)
+	null instanceof Object // false ❗️
+
+	function Dog() {}
+	const d = new Dog();
+	d instanceof Dog // true
+```
+
+## 📌 1. 타입 가드란?
+
+- 타입스크립트에서 유니온 타입을 분기해서 안전하게 좁히는 로직
+  - 대표적인 예: typeof, instanceof, "prop" in obj
+
+## 📌 2. 사용자 정의 타입 가드 (Custom Type Guard)
+
+기본 타입가드
+
+```ts
+interface Cat {
+	meow: number;
+}
+interface Dog {
+	bow: number;
+}
+
+// 기본 타입 가드
+// a is Dog	함수가 true를 반환할 경우, a는 Dog 타입이라고 판단
+
+function catOrDog(a: Cat | Dog): a is Dog {
+	// 타입 판별을 할 수 있는 함수
+	if ((a as Cat).meow) {
+		return false;
+	}
+	return true;
+}
+
+const cat: Cat | Dog = { meow: 3 };
+
+if (catOrDog(cat)) {
+	console.log(cat.meow);
+}
+if ("meow" in cat) {
+	console.log(cat.meow);
+}
+```
+
+## 📌 3. PromiseSettledResult`<T>` 필터링
+
+🔹 PromiseSettledResult란?
+
+```
+type PromiseSettledResult<T> =
+	| PromiseFulfilledResult<T>
+	| PromiseRejectedResult
+```
+
+- .allSettled()에서 사용됨
+  - 모든 Promise가 끝날 때까지 기다림
+  - 성공해도, 실패해도 전부 반환함 ✅
+  - 결과 배열은 다음과 같은 형태:
+
+```ts
+    -  성공 : { status: "fulfilled", value: 1 },
+    -  실패 : { status: "rejected", reason: "에러" },
+
+	- 성공 → { status: "fulfilled", value: T }
+	- 실패 → { status: "rejected", reason: any }
+```
+
+### ✅ 실패한 결과만 필터링
+
+```ts
+// 실패한것만 가져오고 싶을때
+const isRejected = (input: PromiseSettledResult<unknown>): input is PromiseRejectedResult =>
+	input.status === "rejected";
+```
+
+### ✅ 성공한 결과만 필터링
+
+```ts
+const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfilledResult<T> =>
+	input.status === "fulfilled";
+```
+
+## 📌 4. Promise 상태 요약
+
+| 상태      | 설명                           |
+| --------- | ------------------------------ |
+| pending   | 아직 실행 중                   |
+| fulfilled | 성공 완료 → .then()            |
+| rejected  | 실패 완료 → .catch()           |
+| settled   | 완료됨 (fulfilled or rejected) |
+
+Promise의 상태
+
+- Panding
+  - settled
+    - 성공 : resolved
+    - 실패 : rejected
+
+```ts
+// Promise
+// 성공 resolved
+// 실패 rejected
+
+// sattled : .then().catch()
+// 성공 resolved .then()
+// 실패 rejected .catch()
+
+const results: PromiseSettledResult<number>[] = await Promise.allSettled([Promise.resolve(1), Promise.reject("err")]);
+
+const successOnly = results.filter(isFulfilled); // 타입은 PromiseFulfilledResult<number>[]
+const failureOnly = results.filter(isRejected); // 타입은 PromiseRejectedResult[]
+
+promise.then().catch();
+```
+
+```ts
+const getUser = (id: number) => {
+	if (id === 2) Promise.reject("❌ 실패");
+	else Promise.resolve({ id, name: `User ${id}` });
+};
+const requests = [1, 2, 3].map(getUser);
+const results = await Promise.allSettled(requests);
+
+//[
+//  { status: "fulfilled", value: { id: 1, name: "User 1" } },
+//  { status: "rejected", reason: "❌ 실패" },
+//  { status: "fulfilled", value: { id: 3, name: "User 3" } }
+//]
+```

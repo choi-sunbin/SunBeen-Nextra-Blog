@@ -1,0 +1,53 @@
+# 00. 🟦 시작하기 전에
+
+## 📌 The TypeScript Handbook (typescript 공식문서)
+
+https://www.typescriptlang.org/
+
+## 📌 typescript 플레이그라운드
+
+https://www.typescriptlang.org/play
+
+## 📌 typescript 핸드북 필독
+
+https://www.typescriptlang.org/ko/docs/handbook/intro.html
+
+## 📌 typescript 버전 수정 내역
+
+https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-8.html
+
+## 📌 Auto-Open Markdown Preview
+
+Visual studio code 의 extension (Auto-Open Markdown Preview)을 설치 후 진행 하는것을 추천합니다.
+
+# node 설치 (필수)
+
+- npm init -y : 프로젝트 설정
+- npm install typescript : 타입스트립트 설치
+- npx tsc --init : 타입스크립트 초기화
+
+타입스크립트는 타입스크립트를 -> 자바스크립트로 변환시켜 동작을 하게되는데, 그것을 처리하는 node 모듈 입니다.
+
+바로 실행할 수 있는 Deno도 존재, MS에서 신규 컴파일러 제작중
+
+js로 변경을 해서 동작하기 떄문에, 버전만 명시하면, 동작할 여지가 큽니다.
+
+## 📌 tsconfig.json (tsc --init 생성)
+
+- "allowJs": true // JS 함께 허용
+- "strict" : true // 타빙을 더 엄격하게 체크합니다.
+- "sourceMap" : true // 디버깅시, js, ts파일을 맵핑하는 역활을 수행합니다.
+- "target" : "es2016" 산출물 자바스크립트를 명시합니다. 사용 버전을 특정하여 과거 익스플로러까지 커버가 가능합니다.
+- "module" : 최신 모듈을 쓰고 싶으면 ES2015, 그냥 놔두려면 "commonjs"사용해도 무방합니다.
+- "forceConsistentCasingInFileNames" : 윈도우에서는 대소문자를 구분을 잘 안하지만, 리눅스에서는 에러가 많이 날 수 있습니다. 대소문자 지켜서 임포트 할 수 있도록 하는 구문
+- "skipLikCheck" : .d.ts 데이터 타입을 모아둔 파일로, 타입 체크를 사용할 때만 타입을 체크하도록 합니다.
+
+## 📌 기본 지식
+
+- 메인 룰: typescript는 최종적으로 javascript로 변환합니다.
+- 순전한 typescript 코드를 돌릴 수 있는 것은 deno이나 대중화되지가 않았음. 브라우저, 노드는 모두 js 파일을 실행합니다.
+- typescript는 언어이자 컴파일러(tsc)이다. 컴파일러는 ts 코드를 js로 바꿔준다.
+- tsc는 tsconfig.json(tsc --init 시 생성)에 따라 ts 코드를 js(tsc 시 생성)로 바꿔준다. 인풋인 ts와 아웃풋인 js 모두에 영향을 끼치므로 tsconfig.json 설정을 반드시 봐야한다.
+- 단순히 타입 검사만 하고싶다면 tsc --noEmit 하면 된다.
+- 개인 의견: tsconfig.json에서 그냥 esModuleInterop: true, strict: true 두 개만 주로 켜놓는 편. strict: true가 핵심입니다 디버깅을 위해서는 sourceMap: true
+- ts 파일을 실행하는 게 아니라 결과물인 js를 실행해야 한다.

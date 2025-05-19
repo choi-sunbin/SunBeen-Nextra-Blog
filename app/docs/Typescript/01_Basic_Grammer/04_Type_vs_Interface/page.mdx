@@ -1,0 +1,270 @@
+# 04. 🟦 TypeScript - type, interface, union, intersection 정리
+
+## 📌 1. type vs interface
+
+## 📌 type vs interface 차이 정리
+
+| 항목        | type                                   | interface                          |
+| ----------- | -------------------------------------- | ---------------------------------- |
+| 선언 방식   | type A = `{ a: string }`               | interface A `{ a: string }`        |
+| 사용 대상   | 모든 타입 가능 (기본, 유니온, 튜플 등) | 객체 구조(Shape) 정의에 특화       |
+| 확장 방식   | & 연산자로 타입 확장                   | extends 키워드로 상속              |
+| 중복 선언   | ❌ 중복 선언 시 에러 ✅                | 중복 선언 시 자동 병합(Merge)      |
+| 유연성      | 더 유연하고 복잡한 타입 표현 가능      | 구조적 설계에 최적화               |
+| 클래스 구현 | 🚫 직접 구현 불가                      | ✅ implements로 클래스에 적용 가능 |
+| 제네릭      | ✅ 가능                                | ✅ 가능                            |
+
+```ts
+type TypeA = { a: string };
+const a1: TypeA = { a: "hello" };
+
+interface InterfaceB {
+	a: string;
+}
+const b1: InterfaceB = { a: "hi" };
+```
+
+🔁 확장
+
+```ts
+// type 확장
+type Base = { x: number };
+type Extended = Base & { y: number };
+const obj: Extended = { x: 1, y: 2 };
+
+// interface 확장
+interface IBase {
+	x: number;
+}
+interface IExtended extends IBase {
+	y: number;
+}
+interface IBase {
+	z: number;
+}
+const obj2: IExtended = { x: 3, y: 4, z: 5 };
+```
+
+🧩 클래스 구현
+
+```ts
+interface Person {
+	name: string;
+}
+class Human implements Person {
+	name = "John";
+}
+```
+
+## 📌 2. 제네릭 사용 가능
+
+```ts
+type Box<T> = { value: T };
+interface IBox<T> {
+	value: T;
+}
+
+const tBox: Box<string> = { value: "hello" };
+const iBox: IBox<number> = { value: 42 };
+```
+
+## 📌 3. 유니온 타입 (|)
+
+여러 타입 중 하나만 만족하면 되는 구조
+
+계산이 혼란스러울 수 있음
+
+타입 스크립트는 모든 경우의 수를 전부 고려한다,
+
+2 _ 2 _ 2 총 8가지의 모든 가짓수를 고려한다.
+
+타입의 고려가 전부 꼬여버리기 때문에, 잘못된 상황이 나올 수 있다.
+
+```ts
+function add(x: string | number, y: string | number): string | number {
+	return x + y;
+}
+
+const result: string = add(1, 2) as string; // 타입 혼동 가능
+```
+
+```ts
+type A = { hello: "world" } | { sunbin: "choi" };
+
+const u1: A = { hello: "world" };
+const u2: A = { sunbin: "choi" };
+// const u3: A = { hello: "world", sunbin: "choi" } // ❌ 오류
+```
+
+## 📌 4. 인터섹션 타입 (&)
+
+intersection
+
+모든 타입을 동시에 만족해야 함
+
+속성 병합이 일어남
+
+```ts
+type A = { hello: "world" } & { sunbin: "choi" };
+
+const a: A = {
+	hello: "world",
+	sunbin: "choi"
+};
+```
+
+## 📌 5. 시각적으로 비교
+
+- Union (|)
+- Intersection (&) 모든 타입을 동시에 만족해야 함
+
+## 📌 6. 정리 요약 코드
+
+```ts
+// type
+type T = { a: string } & { b: number };
+const t: T = { a: "hi", b: 123 };
+
+// interface
+interface I1 {
+	a: string;
+}
+interface I2 extends I1 {
+	b: number;
+}
+const i: I2 = { a: "hi", b: 123 };
+
+// union
+type U = { x: string } | { y: number };
+const u: U = { x: "ok" };
+
+// intersection
+type I = { x: string } & { y: number };
+const x: I = { x: "ok", y: 1 };
+```
+
+## 📌 7. Type Alias (타입 별칭) 확장
+
+- type은 객체 형태뿐 아니라 유니온, 튜플, 기본 타입 등 다양한 타입 표현이 가능
+- & (Intersection)을 사용하여 타입을 확장함
+- 속성이 병합되어 모두 포함해야 함
+
+```ts
+type Animal = { breath: true };
+type Poyouryu = Animal & { breed: true };
+type Human = Poyouryu & { think: true };
+
+const sunbin: Human = {
+	breath: true,
+	breed: true,
+	think: true
+};
+```
+
+## 📌 8. Interface 확장 (extends)
+
+- 객체 형태를 정의하는 데 특화된 문법
+- extends 키워드를 통해 계층적으로 확장 가능
+- 상속받은 속성을 자동 포함함
+
+```ts
+interface A {
+	breath: true;
+}
+
+interface B extends A {
+	breed: true;
+}
+
+const b: B = {
+	breath: true,
+	breed: true
+};
+```
+
+- ✅ 타입 별칭을 인터페이스에서 확장하는 것도 가능
+
+```ts
+type Poyouryu = { breath: true; breed: true };
+
+interface C extends Poyouryu {
+	think: true;
+}
+
+const c: C = {
+	breath: true,
+	breed: true,
+	think: true
+};
+```
+
+- ✔️ interface → type 확장은 불가
+- ❗ type → interface 확장은 가능
+
+## 📌 9. Interface 중복 선언 (Declaration Merging)
+
+- interface는 동일한 이름으로 여러 번 선언 시 병합됨
+- 이를 통해 외부 라이브러리를 수정하지 않고 확장할 수 있음
+- 실무에서 Window, HTMLElement 등을 확장할 때 자주 사용
+
+```ts
+interface A {
+	talk: () => void;
+}
+interface A {
+	eat: () => void;
+}
+interface A {
+	shit: () => void;
+}
+
+const a: A = {
+	talk: () => {},
+	eat: () => {},
+	shit: () => {}
+};
+
+// 실전 예제 HTMLElement에 커스텀 속성 추가
+interface HTMLElement {
+	myCustomValue?: number;
+}
+
+const div = document.createElement("div");
+div.myCustomValue = 42; // ✅ 타입 인식됨
+
+// 커스터마이징: 인터페이스 병합
+// axios에서 config, response 등에 커스텀 필드를 추가하여 실무에서 활용
+// 주로 RequestConfig, AxiosResponse 확장에 사용됨
+
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+
+declare module "axios" {
+	export interface AxiosRequestConfig {
+		authToken?: string;
+	}
+
+	export interface AxiosResponse<T = any> {
+		requestId?: string;
+	}
+}
+
+axios
+	.get("/api/test", {
+		authToken: "abc123" // ✅ 타입 인식됨
+	})
+	.then((res) => {
+		console.log(res.requestId); // ✅ 커스텀 필드 사용 가능
+	});
+```
+
+- ✅ 타입 병합은 interface만 가능
+- ❌ type은 동일 이름으로 중복 선언 불가
+
+## 📌 10. 네이밍 규칙 (컨벤션)
+
+| 용도        | 네이밍 예시 | 설명                                                   |
+| ----------- | ----------- | ------------------------------------------------------ |
+| interface   | IProps      | I 접두어를 붙이는 헝가리안 표기법 스타일 (예전 스타일) |
+| type alias  | TType       | T 접두어 (Type임을 명확히 하려는 의도)                 |
+| enum        | EKind       | E 접두어 (Enum임을 구분하기 위함)                      |
+| modern 방식 | Props, Kind | ❗ 요즘은 접두어 없이 단순하게 쓰는 경향 많음          |

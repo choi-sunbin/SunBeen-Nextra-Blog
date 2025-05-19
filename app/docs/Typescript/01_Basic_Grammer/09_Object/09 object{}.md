@@ -1,0 +1,36 @@
+# 🟦 object{}
+
+## 📌 1. 빈 객체 타입 {} vs Object vs object
+
+```ts
+//빈객체( "{}"  ) 와 Object는 모든 타입 (null과 undefined는 제외한다.)
+const x: {} = "hello"
+const y: Object = "hi"
+const xx: object = "h1" // object 지양, interface, type, class를 활용하자
+const yy: object = { hello: "world" }
+
+const z: unknown = "hi"
+
+// unknown타입은 모든 타입을 전부다 받을 수 있다.
+// unknown은 나중에 타입을 정해주어야 한다
+// unknown = {} | null | undefined
+if (z) {
+	//unknwon을 if문 안에 넣으면, Typescript 4.8 버전 이후, 모든 객체 {}로 표시된다.
+	z
+}
+```
+
+- {} null과 undefined 제외한 모든 값 허용 (string, number, boolean 포함)
+- Object 자바스크립트의 Object (null, undefined 제외)
+- object 원시타입(string, number, boolean 등)을 제외한 모든 객체 (지양)
+
+## 📌2. unknown 타입
+
+```ts
+const z: unknown = "hi"
+```
+
+unknown은 모든 타입을 허용하지만,
+직접 사용하려면 타입을 좁혀야 함
+
+

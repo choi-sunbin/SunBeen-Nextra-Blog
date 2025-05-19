@@ -1,0 +1,115 @@
+# 06. 🟦 TypeScript any vs unknown 정리
+
+## 📌 1. any – 타입 검사 포기
+
+- any는 타입스크립트가 모든 타입 검사를 포기함 (지속성)
+- 마치 자바스크립트처럼 동작함
+- 타입 안정성이 완전히 깨지므로 사용 지양
+
+```ts
+let value: any = "hello";
+value.toFixed(); // 런타임 오류 발생 가능 (컴파일러는 체크 안 함)
+```
+
+장점 : 빠르게 코드 작성 가능
+단점 : 모든 타입 안전성을 상실함, 오타, 타입 오류를 잡지 못함
+
+## 📌 2. unknown – 타입을 모르지만 안전하게 다루고 싶을 때
+
+- any처럼 아무거나 할당 가능하지만, 직접 사용할 때는 타입을 확인하거나 단언해야 함
+- 주로 에러 처리, 외부 데이터, 유틸 함수 등에서 많이 사용
+
+```ts
+let input: unknown = "hello";
+// input.toUpperCase() // ❌ 에러 발생
+
+if (typeof input === "string") {
+	input.toUpperCase(); // ✅ 타입 확인 후 사용 가능
+}
+```
+
+## 📌 3. 실전 예: try-catch에서 unknown
+
+TypeScript 4 이상에서는 catch(error)의 타입이 기본적으로 unknown입니다.
+
+```ts
+try {
+	throw new Error("예외 발생");
+} catch (error) {
+	// error는 unknown 타입
+	// error.message ❌ 접근 불가
+
+	if (error instanceof Error) {
+		console.log(error.message); // ✅ 안전하게 접근 가능
+	}
+
+	// 또는 단언
+	const e = error as Error;
+	console.log(e.message);
+}
+```
+
+- ❗ 예전엔 암묵적으로 any였고, 오류 처리 중 또 오류 나는 일이 많았음
+  - → 그래서 기본 타입을 unknown으로 바꾼 것
+
+## 📌 4. 타입 단언이 필요한 경우 (as)
+
+예: 인터페이스 리턴값과 void 타입 문제
+
+```ts
+interface A {
+	talk: () => void;
+}
+const a: A = {
+	talk() {
+		return 3; // ❗ 리턴값 있음 (타입 정의는 void)
+	}
+};
+
+const result = a.talk(); // TypeScript는 result를 void로 처리
+// const result = a.talk() as number // ❌ 오류는 안 나지만 타입 불일치
+
+console.log(result); // undefined가 아닌 3이 출력됨 (TS는 체크만, JS는 실행됨)
+```
+
+🔍 타입 검사 vs 실행 결과의 차이
+TypeScript는 타입 검사기일 뿐이고
+JS 실행 결과와 완전히 일치하지는 않습니다.
+
+타입 상 void → 리턴값 없어야 하지만
+
+JS에서는 return 3이므로 실제 값은 3
+
+## 📌 5. 정리 요약
+
+| 항목           | any                        | unknown                                           |
+| -------------- | -------------------------- | ------------------------------------------------- |
+| 타입 검사      | ❌ 완전히 포기             | ✅ 사용 전에 타입 체크 or 단언 필요               |
+| 할당 가능성    | 아무 타입에 할당 가능      | 마찬가지로 가능                                   |
+| 사용할 때 제한 | 없음 (위험)                | 있음 (안전)                                       |
+| 사용 목적      | 임시 작업, 빠른 프로토타입 | 외부 데이터, 에러 처리 등 신중하게 다뤄야 할 상황 |
+
+### ✅ 추천 사용법
+
+상황 추천 타입
+
+- 빠른 테스트용, 임시 스크립트 작성 any (단기적으로만)
+- 에러, JSON 파싱, 외부 API 응답 unknown
+- 동적 타입을 분기해 정제할 때 unknown + 타입가드
+  📦 예제 요약
+
+```ts
+function parse(json: string): unknown {
+	return JSON.parse(json);
+}
+
+const raw = parse('{"name": "sunbin"}');
+
+// typeof 체크 없이 사용 불가
+// console.log(raw.name) ❌
+
+// 타입 단언 또는 가드 필요
+if (typeof raw === "object" && raw !== null && "name" in raw) {
+	console.log((raw as any).name); // ✅
+}
+```

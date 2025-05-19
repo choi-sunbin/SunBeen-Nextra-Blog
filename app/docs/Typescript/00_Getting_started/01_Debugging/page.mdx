@@ -1,0 +1,30 @@
+# 01. 🟦 디버깅 환경 설정
+
+타입 스크립트는 타입을 정확하게 추론한다.
+
+typescript에서 에러가 나도, Javascript적으로 돌아가기 만한다면, javascript로 변경을 해준다.
+
+**하지만!** Typescript에서 오류가 발생하는 코드를 사용해서는 안된다.
+
+npm install typescript
+
+## 📌 타입 스크립트 초기화
+
+tsc --init
+
+tsconfig.json : 타입 스크립트의 설정 정보
+
+- sourceMap : true
+
+## 📌 타입 검사
+
+tsc --noEmit (이밋)
+
+## 📌 빌드
+
+- 직접 작성한 tsconfig.json 파일을 선택한다.
+  - visual studio code : ctrl + shift + B
+
+## 📌 디버그
+
+ctrl + shift + D

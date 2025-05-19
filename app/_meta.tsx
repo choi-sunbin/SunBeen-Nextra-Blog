@@ -1,10 +1,11 @@
 export default {
 	index: {
 		title: "Home",
-		type: "page"
+		type: "page",
+		display: "hidden"
 	},
-	fruits: {
-		title: "Fruits",
+	docs: {
+		title: "Documents",
 		type: "page"
 	},
 	about: {
