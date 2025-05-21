@@ -1,9 +1,6 @@
 # Nextra Docs TypeScript Sample
 
-This is a minimal **Next.js + Nextra Docs** starter project, created by following the official [Nextra Docs Theme Getting Started Guide](https://nextra.site/docs/docs-theme/start).
-
-> This project is configured using **TypeScript**, **Next.js App Router**, and **Nextra Docs Theme**.
-
+This is Sunbeen Choi's Nextra Blog
 ---
 
 ## 🚀 Getting Started
