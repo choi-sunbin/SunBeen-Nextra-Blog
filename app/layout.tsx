@@ -28,7 +28,24 @@ const navbar = (
 		// ... Your additional navbar options
 	/>
 );
-const footer = <Footer>MIT {new Date().getFullYear()} © Nextra.</Footer>;
+const footer = (
+	<Footer>
+		<div className="text-sm text-gray-500 space-y-1">
+			<p>MIT {new Date().getFullYear()} © Nextra.</p>
+			<p>
+				Inspired by{" "}
+				<a
+					href="https://nimsitha.com"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="underline hover:text-white transition-colors"
+				>
+					nimsitha.com
+				</a>
+			</p>
+		</div>
+	</Footer>
+);
 
 export default async function RootLayout({
 	children
