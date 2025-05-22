@@ -1,8 +1,8 @@
 # 쿠버네티스 한방 정리
 
-# 1. Linux OS 흐름
+## Linux OS 흐름
 
-## Linux 커널 두 가지 배포판
+### Linux 커널 두 가지 배포판
 
 **debian**이랑 **redhat** 계열 (쿠버네티스도 크게 이 두가지 계열을 지원한다.)
 
@@ -11,7 +11,7 @@
 
 ---
 
-## Redhat에서 Linux 배포판이 만들어지는 순서
+### Redhat에서 Linux 배포판이 만들어지는 순서
 
 - 개발버전: **Fedora**
 - 안정화 버전: **RHEL (Red Hat Enterprise Linux)**
@@ -41,7 +41,7 @@ Fedora → CentOS Stream (테스트) → RHEL (안정화)
 - Rocky Linux, AlmaLinux: RHEL 복제 및 CentOS 대체재
   ![image.png](./image%201.png)
 
-# 2. Container 흐름
+## 2. Container 흐름
 
 **Container**: 컨테이너가 나오게 된 계기가 리눅스가 발전하면서 만들어진 커널기술 중 **격리기술**이다.
 
@@ -49,7 +49,7 @@ Fedora → CentOS Stream (테스트) → RHEL (안정화)
 
 ---
 
-## 기술 흐름 타임라인
+### 기술 흐름 타임라인
 
 ![image.png](./image%202.png)
 
@@ -71,7 +71,7 @@ Fedora → CentOS Stream (테스트) → RHEL (안정화)
 
 자원 가상화를 통해 우리는 이제 각각의 App을 소위 말하는 **독립적인 환경**에서 실행을 시킬 수 있게 됨.
 
-## Docker
+### Docker
 
 Docker에서 자체 개발한 컨테이너 런타임 libcontainer(Low-Level) 을 사용하여
 
@@ -172,22 +172,22 @@ Docker Engine
 
 ---
 
-## 🧱 Kubernetes Container Orchestration 핵심 컴포넌트 정리
+## Kubernetes Container Orchestration 핵심 컴포넌트 정리
 
 - Kebe-apiserver :
   - 모든 요청(API 호출)을 수신하고 인증/인가 후 각 컴포넌트에 전달
 - Kubelet :
   - 노드 내의 Pod 생성/상태 모니터링을 담당. 컨테이너 런타임과 연동하여 실제 컨테이너 생성
 
-🔁 kubelet은 과거 Docker, rkt 등 다양한 컨테이너 런타임과 연동 가능하도록 맞춤형 API를 호출 지원
+kubelet은 과거 Docker, rkt 등 다양한 컨테이너 런타임과 연동 가능하도록 맞춤형 API를 호출 지원
 
-### 📦 Kubernetes 명령 구조
+### Kubernetes 명령 구조
 
-> ❗ Kubernetes에서는 컨테이너 생성 명령이 아니라 Pod 생성 명령만 존재합니다.
+> ! Kubernetes에서는 컨테이너 생성 명령이 아니라 Pod 생성 명령만 존재합니다.
 
 - **Pod**: Kubernetes의 최소 배포 단위 (하나 이상의 컨테이너 포함 가능)
 
-### 📦 쿠버네티스 동작 예시
+### 쿠버네티스 동작 예시
 
 ```
 사용자
@@ -197,9 +197,9 @@ Docker Engine
 						└─ container runtime (실제 Container 생성)
 ```
 
-# 📦 containerd와 CRI(Container Runtime Interface)
+## containerd와 CRI(Container Runtime Interface)
 
-## ✅ 배경 설명
+### 배경 설명
 
 과거에는 컨테이너 런타임이 많아질수록 `kubelet`이 각 런타임의 소스를 **직접 호출해서 구현해야** 했음.
 
@@ -207,7 +207,7 @@ Docker Engine
 
 ---
 
-## 🔧 Kubernetes의 변화
+### Kubernetes의 변화
 
 Kubernetes 1.5버전부터 **컨테이너 런타임 인터페이스 (CRI)** 라는 **표준 인터페이스**를 추가함.
 
@@ -216,11 +216,11 @@ Kubernetes 1.5버전부터 **컨테이너 런타임 인터페이스 (CRI)** 라�
 
 ![image.png](./image%2011.png)
 
-👉 이렇게 하면 kubelet 입장에서는 어떤 런타임이든 동일하게 다룰 수 있음.
+이렇게 하면 kubelet 입장에서는 어떤 런타임이든 동일하게 다룰 수 있음.
 
 ---
 
-## 📐 구조 요약
+### 구조 요약
 
 - kubelet은 **interface만 선언**
 - 실제 실행은 각 컨테이너 런타임 쪽의 **CRI 구현체**가 담당
@@ -244,14 +244,14 @@ kubelet
 
 여기서 컨테이너 런타임의 이름을 미란티스 컨테이너 런타임으로 명칭을 바꾸게됨
 
-## ✅ 컨테이너 런타임 교체 시 고려사항
+## 컨테이너 런타임 교체 시 고려사항
 
 - **컨테이너 런타임을 바꿀 때 가장 고민되는 부분은 `container image` 호환성이다.**
 - 예: `docker`에서 `containerd`로 런타임을 바꾸면 이미지를 다시 만들어야 할까?
 
 ---
 
-## 🧾 표준화의 등장: OCI (Open Container Initiative)
+### 표준화의 등장: OCI (Open Container Initiative)
 
 ![image.png](./image%2012.png)
 
@@ -265,7 +265,7 @@ kubelet
 
 ---
 
-## 🛠️ Kubernetes 입장에서의 아쉬운 점
+### Kubernetes 입장에서의 아쉬운 점
 
 - kubelet의 CRI 인터페이스는 **gRPC 기반 통신**을 함
 - 하지만 여전히 쿠버네티스 입장에서는 **런타임 종속성**이 아쉬운 부분이 있음
@@ -274,32 +274,32 @@ kubelet
 
 ---
 
-## ⚙️ 컨테이너 런타임과 쿠버네티스의 개발 속도 불일치 문제
+### 컨테이너 런타임과 쿠버네티스의 개발 속도 불일치 문제
 
 - `docker`에 새로운 기능이 생기면 **CRI 구현체도 패치가 필요**
 - 결국 **쿠버네티스도 같이 수정/패치**해야 하는 번거로움
 
-### 🔄 구조 개선
+### 구조 개선
 
 - kubelet에서 컨테이너 런타임으로 **바로 명령 전달이 가능하도록 구조 개선**
 
 ---
 
-## 🧩 해결책: `containerd`의 CRI-Plugin
+### 해결책: `containerd`의 CRI-Plugin
 
 - `containerd`에는 **CRI-Plugin**이 추가되어 kubelet 인터페이스에 직접 맞춤
 - `cri-o`도 처음부터 CRI 규격에 맞춘 런타임으로 개발됨 (Redhat)
 
 ---
 
-## 📌 미란티스와 cri-dockerd
+### 미란티스와 cri-dockerd
 
 - Docker를 대체할 수 있도록 **cri-dockerd**를 미란티스에서 개발
 - `v1.27`(stable)부터는 **kubelet이 CRI 구조를 기본적으로 사용**
 
 ---
 
-## 🧠 핵심 정리
+## 핵심 정리
 
 | 항목        | 설명                                                                   |
 | ----------- | ---------------------------------------------------------------------- |
@@ -312,7 +312,7 @@ kubelet
 
 ---
 
-✅ **결론**:
+**결론**:
 
 이미지 형식이 **OCI 규격**만 맞추면, 어떤 런타임이든 (`docker`, `containerd`, `cri-o`) 동일하게 사용할 수 있다.
 

@@ -36,9 +36,9 @@ export function HeroSection() {
 							</h2>
 							<p className="text-gray-200 text-lg min-[27rem]:text-xl font-light leading-relaxed md:leading-[1.75] max-w-2xl">
 								<br />
-								복잡한 시스템을 이해하고, 더 나은 구조로 재구성하는 것을 즐깁니다.
+								“작동하는 것”보다 “잘 작동하는 것”이 중요합니다.
 								<br />
-								저는 “작동하는 것”보다 “잘 작동하는 것”에 집중합니다.
+								복잡한 시스템 속에서, 작은 구조를 이해하고, 따라가며 분석합니다.
 								<br />
 								<br />
 								정리한 문서와 프로젝트들을 통해
