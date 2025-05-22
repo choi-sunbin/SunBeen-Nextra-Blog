@@ -3,6 +3,7 @@ import { Footer, Layout, Navbar } from "nextra-theme-docs";
 import { Banner, Head } from "nextra/components";
 import { getPageMap } from "nextra/page-map";
 import "nextra-theme-docs/style.css";
+import Image from "next/image";
 
 export const metadata = {
 	// Define your metadata here
@@ -12,7 +13,18 @@ export const metadata = {
 const banner = <Banner storageKey="some-key">Sunbeen's Blog</Banner>;
 const navbar = (
 	<Navbar
-		logo={<b>Sunbeen's Blog</b>}
+		logo={
+			<>
+				<Image
+					width={36}
+					height={36}
+					src={"https://img.icons8.com/?size=100&id=tvOT5hDemP8M&format=png&color=000000"}
+					className="mr-2"
+					alt="Logo"
+				/>
+				<b>Sunbeen's Blog</b>
+			</>
+		}
 		// ... Your additional navbar options
 	/>
 );

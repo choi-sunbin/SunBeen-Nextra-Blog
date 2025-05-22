@@ -16,5 +16,8 @@ const withNextra = nextra({
 
 // Export the final Next.js config with Nextra included
 export default withNextra({
+	images: {
+		domains: ["img.icons8.com"] // 허용할 외부 이미지 도메인 추가
+	}
 	// ... Add regular Next.js options here
 });
