@@ -22,7 +22,7 @@ const navbar = (
 					className="mr-2"
 					alt="Logo"
 				/>
-				<b>Sunbeen's Blog</b>
+				<b className="text-white">Sunbeen's Blog</b>
 			</>
 		}
 		// ... Your additional navbar options
@@ -67,16 +67,18 @@ export default async function RootLayout({
 				{/* Your additional tags should be passed as `children` of `<Head>` element */}
 			</Head>
 			<body>
-				<Layout
-					banner={banner}
-					navbar={navbar}
-					pageMap={await getPageMap()}
-					docsRepositoryBase="https://github.com/shuding/nextra/tree/main/docs"
-					footer={footer}
-					// ... Your additional layout options
-				>
-					{children}
-				</Layout>
+				<div className="bg-grey-d">
+					<Layout
+						banner={banner}
+						navbar={navbar}
+						pageMap={await getPageMap()}
+						docsRepositoryBase="https://github.com/shuding/nextra/tree/main/docs"
+						footer={footer}
+						// ... Your additional layout options
+					>
+						{children}
+					</Layout>
+				</div>
 			</body>
 		</html>
 	);
