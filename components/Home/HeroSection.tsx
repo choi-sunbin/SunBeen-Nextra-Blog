@@ -1,28 +1,19 @@
 import React from "react";
-import { Github, Linkedin, Mail } from "lucide-react";
-// import { NETWORKING_LINKS } from "@/constants";
-import NetworkingButton from "./NetworkingButton";
+import { Github, Mail } from "lucide-react";
+import { NETWORKING_LINKS } from "@/constants";
 import { Avatar } from "@mui/material";
 import Image from "next/image";
 // import { HeroCircle } from "./HeroCircle";
 
 const NETWORKING_BUTTONS = [
-	// {
-	// 	icon: <Github strokeWidth={1.75} className="w-8 h-8" />,
-	// 	...NETWORKING_LINKS[0]
-	// },
-	// {
-	// 	icon: <Linkedin strokeWidth={1.75} className="w-8 h-8" />,
-	// 	...NETWORKING_LINKS[1]
-	// },
-	// {
-	// 	icon: <Mail strokeWidth={1.75} className="w-8 h-8" />,
-	// 	...NETWORKING_LINKS[2]
-	// }
-	/*   {
-    icon: <FileText strokeWidth={1.75} className="w-8 h-8" />,
-    ...NETWORKING_LINKS[3],
-  }, */
+	{
+		icon: <Github strokeWidth={1.75} className="w-8 h-8" />,
+		...NETWORKING_LINKS[0]
+	},
+	{
+		icon: <Mail strokeWidth={1.75} className="w-8 h-8" />,
+		...NETWORKING_LINKS[1]
+	}
 ];
 
 export function HeroSection() {
@@ -56,8 +47,8 @@ export function HeroSection() {
 							</p>
 							<div className="pt-1 flex space-x-4">
 								{/* {NETWORKING_BUTTONS.map((button, index) => (
-                  <NetworkingButton key={index} {...button} />
-                ))} */}
+									<NetworkingButton key={index} {...button} />
+								))} */}
 							</div>
 						</div>
 					</div>
