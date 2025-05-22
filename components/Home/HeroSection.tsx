@@ -39,12 +39,11 @@ export function HeroSection() {
 							<h1 className="max-[22rem]:text-4xl text-4xl font-bold bg-linear-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent tracking-wide">
 								최선빈
 							</h1>
-
 							<h2 className="text-2xl text-gray-200 tracking-wide font-medium">
 								Software Developer & <br className="inline min-[27rem]:hidden" />
 								Devops Engineer
 							</h2>
-							<p className="text-gray-300 text-lg min-[27rem]:text-xl font-light leading-relaxed md:leading-[1.75] max-w-2xl">
+							<p className="text-gray-200 text-lg min-[27rem]:text-xl font-light leading-relaxed md:leading-[1.75] max-w-2xl">
 								<br />
 								복잡한 시스템을 이해하고, 더 나은 구조로 재구성하는 것을 즐깁니다.
 								<br />
@@ -68,7 +67,7 @@ export function HeroSection() {
 							alt="Profile"
 							width={"300"}
 							height={"300"}
-							className="rounded-full md:h-[20rem] md:w-[20rem] xl:h-[25rem] xl:w-[25rem] object-cover"
+							className="brightness-125 rounded-full md:h-[20rem] md:w-[20rem] xl:h-[25rem] xl:w-[25rem] object-cover"
 						/>
 					</div>
 				</div>
