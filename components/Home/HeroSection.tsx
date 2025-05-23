@@ -1,9 +1,8 @@
 import React from "react";
 import { Github, Mail } from "lucide-react";
 import { NETWORKING_LINKS } from "@/constants";
-import { Avatar } from "@mui/material";
 import Image from "next/image";
-// import { HeroCircle } from "./HeroCircle";
+import NetworkingButton from "./NetworkingButton";
 
 const NETWORKING_BUTTONS = [
 	{
@@ -40,15 +39,17 @@ export function HeroSection() {
 								<br />
 								복잡한 시스템 속에서, 작은 구조를 이해하고, 따라가며 분석합니다.
 								<br />
-								<br />
 								정리한 문서와 프로젝트들을 통해
 								<br />
 								제가 어떤 방식으로 일하고 생각하는지 보여드리겠습니다.
+								<br />
+								<br />
 							</p>
+
 							<div className="pt-1 flex space-x-4">
-								{/* {NETWORKING_BUTTONS.map((button, index) => (
+								{NETWORKING_BUTTONS.map((button, index) => (
 									<NetworkingButton key={index} {...button} />
-								))} */}
+								))}
 							</div>
 						</div>
 					</div>

@@ -1,42 +1,3 @@
-export const NAVIGATION = [
-	{
-		id: "1",
-		isSelectable: true,
-		name: "src",
-		children: [
-			{
-				id: "4",
-				isSelectable: true,
-				name: "projects",
-				children: [
-					{
-						id: "5",
-						isSelectable: false,
-						name: "main.tsx"
-					},
-					{
-						id: "7",
-						isSelectable: false,
-						name: "footer.tsx"
-					}
-				]
-			},
-			{
-				id: "9",
-				isSelectable: true,
-				name: "blog",
-				children: [
-					{
-						id: "9",
-						isSelectable: true,
-						name: "utils.ts"
-					}
-				]
-			}
-		]
-	}
-];
-
 export const NETWORKING_LINKS = [
 	{
 		name: "GitHub",
@@ -47,38 +8,23 @@ export const NETWORKING_LINKS = [
 		name: "Email",
 		href: "mailto:csn1434@naver.com",
 		tooltip: "Email"
-	},
-	{
-		name: "Resume",
-		href: "/assets/resume.pdf",
-		tooltip: "Resume"
 	}
 ];
 
 export const SOCIALS = [
 	{
 		name: "GitHub",
-		url: "https://github.com/imesh97/",
+		url: "https://github.com/csn1434/",
 		icon: "https://img.icons8.com/3d-fluency/94/github.png"
 	},
 	{
-		name: "LinkedIn",
-		url: "https://linkedin.com/in/imesh-nimsitha/",
-		icon: "https://img.icons8.com/3d-fluency/94/linkedin--v1.png"
-	},
-	{
-		name: "Instagram",
-		url: "https://www.instagram.com/imesh.gg/",
-		icon: "https://img.icons8.com/3d-fluency/94/instagram-new.png"
-	},
-	{
 		name: "Email",
-		url: "mailto:imesh.nimsitha@gmail.com",
+		url: "mailto:csv1434@gmail.com",
 		icon: "https://img.icons8.com/3d-fluency/94/mail.png"
 	},
 	{
 		name: "X",
-		url: "https://x.com/imesh97",
+		url: "https://x.com/csn1434",
 		icon: "https://img.icons8.com/fluency/144/twitterx--v1.png"
 	}
 ];
@@ -99,7 +45,7 @@ export const PROJECTS = [
 		image: "/assets/projects/cover_nexusquiz.jpeg",
 		technologies: ["Next.js", "FastAPI", "WebSockets", "Socket.IO", "Raft Consensus"],
 		demoUrl: "https://drive.google.com/file/d/1ZJU_cDErc5cFRO5KBX-DtXh0k9jFPeNh/view?usp=sharing",
-		githubUrl: "https://github.com/imesh97/nexusquiz"
+		githubUrl: "https://github.com/csn1434/nexusquiz"
 	},
 	{
 		title: "affinity.ai - crm",
@@ -115,8 +61,8 @@ export const PROJECTS = [
 		description: "Using Multinomial Naive Bayes, Support Vector Machine, and fine-tuned BERT models.",
 		image: "/assets/projects/cover_tunetype.jpeg",
 		technologies: ["Python", "TensorFlow", "Transformers", "Google BERT", "scikit-learn"],
-		demoUrl: "https://github.com/imesh97/tunetype/blob/main/report.pdf",
-		githubUrl: "https://github.com/imesh97/tunetype",
+		demoUrl: "https://github.com/csn1434/tunetype/blob/main/report.pdf",
+		githubUrl: "https://github.com/csn1434/tunetype",
 		demoUrlText: "report"
 	},
 	{
@@ -125,7 +71,7 @@ export const PROJECTS = [
 		image: "/assets/projects/cover_bankrpc.jpeg",
 		technologies: ["Python", "Streamlit", "gRPC", "Redis", "AWS EC2", "Docker"],
 		demoUrl: "http://ec2-3-144-116-12.us-east-2.compute.amazonaws.com:8501/",
-		githubUrl: "https://github.com/imesh97/bankrpc"
+		githubUrl: "https://github.com/csn1434/bankrpc"
 	},
 	{
 		title: "raphael - ai image editor",
@@ -133,7 +79,7 @@ export const PROJECTS = [
 		image: "/assets/projects/cover_raphael.jpeg",
 		technologies: ["Next.js", "Cloudinary", "Stripe", "MongoDB", "Clerk", "Zod"],
 		demoUrl: "https://raphael.nimsitha.com",
-		githubUrl: "https://github.com/imesh97/raphael-ai"
+		githubUrl: "https://github.com/csn1434/raphael-ai"
 	}
 ];
 
@@ -149,10 +95,10 @@ interface Experience {
 
 export const EXPERIENCES: Experience[] = [
 	{
-		company: "SymptomStream",
-		position: "Chief Technology Officer",
-		period: "Nov. 2024 — Present",
-		location: "Hamilton, CA",
+		company: "Techvile (주)테크빌",
+		position: "Software Developer",
+		period: "2018 - 2020",
+		location: "서울시 영등포구 버드나루로 12가길 ",
 		achievements: [
 			"Led development of a real-time, AI-powered medical assistant prototype, designed to streamline clinical decision-making and optimize workflow efficiency in emergency rooms.",
 			"Secured acceptance into 3 startup accelerator programs, gaining access to mentorship, industry partnerships, and early-stage funding opportunities.",
@@ -160,7 +106,7 @@ export const EXPERIENCES: Experience[] = [
 			"Directed project to prototype phase by establishing clear technical milestones, managing development timelines, and ensuring timely and high-quality feature delivery."
 		],
 		logo: "/assets/logo_symptomstream.png",
-		site: "https://symptomstream.ca"
+		site: "http://techville.biz/"
 	},
 	/*   {
     company: "Affinity Auto Group",
@@ -177,10 +123,10 @@ export const EXPERIENCES: Experience[] = [
     site: "https://affinityautogroup.ca",
   }, */
 	{
-		company: "Rangara Creations",
-		position: "Web Developer",
-		period: "June 2023 — Jan. 2024",
-		location: "Brampton, CA",
+		company: "ZeroOne AI",
+		position: "Web Developer - Front-end",
+		period: "2023 — 2024",
+		location: "경기 성남시 수정구 창업로 43",
 		achievements: [
 			"Developed and deployed a commercial web platform, implementing intuitive designs that increased user engagement by 200% and directly converted 10 new regular clients.",
 			"Optimized SOC 2-ready database schemas by implementing SQL queries and indexing strategies, reducing query response times by 30% and lowering infrastructure costs by 60%.",
@@ -188,7 +134,21 @@ export const EXPERIENCES: Experience[] = [
 			"Built a secure, role-based media management and uploading system, enabling 3x more upload throughput and accelerating content deployment times by 75%."
 		],
 		logo: "/assets/logo_rangara.png",
-		site: "http://rangaracreations.com"
+		site: "https://www.zeroone.ai/"
+	},
+	{
+		company: "Mario Outlet",
+		position: "System Management",
+		period: "2023 — 2024",
+		location: "경기 성남시 수정구 창업로 43",
+		achievements: [
+			"Developed and deployed a commercial web platform, implementing intuitive designs that increased user engagement by 200% and directly converted 10 new regular clients.",
+			"Optimized SOC 2-ready database schemas by implementing SQL queries and indexing strategies, reducing query response times by 30% and lowering infrastructure costs by 60%.",
+			"Engineered an intuitive, responsive admin interface for managing user accounts, content and permissions, leading to an 80% improvement in operational efficiency for staff.",
+			"Built a secure, role-based media management and uploading system, enabling 3x more upload throughput and accelerating content deployment times by 75%."
+		],
+		logo: "/assets/logo_rangara.png",
+		site: "https://www.zeroone.ai/"
 	}
 ];
 
@@ -224,16 +184,7 @@ export const SKILLS = [
 		category: "Frontend",
 		img: "https://img.icons8.com/nolan/64/nextjs.png"
 	},
-	{
-		name: "Vite",
-		category: "Frontend",
-		img: "https://img.icons8.com/fluency/144/vite.png"
-	},
-	{
-		name: "Streamlit",
-		category: "Frontend",
-		img: "https://img.icons8.com/color/48/streamlit.png"
-	},
+
 	{
 		name: "Bootstrap",
 		category: "Frontend",
@@ -248,11 +199,6 @@ export const SKILLS = [
 		name: "Chakra UI",
 		category: "Frontend",
 		img: "https://img.icons8.com/color/48/chakra-ui.png"
-	},
-	{
-		name: "Motion",
-		category: "Frontend",
-		img: "/assets/icons/motion.png"
 	},
 	{
 		name: "Java",
@@ -270,6 +216,16 @@ export const SKILLS = [
 		img: "https://img.icons8.com/fluency/144/c-plus-plus-logo.png"
 	},
 	{
+		name: "C#",
+		category: "Backend",
+		img: "https://img.icons8.com/?size=100&id=55251&format=png&color=000000"
+	},
+	{
+		name: "Delphi",
+		category: "Backend",
+		img: "https://img.icons8.com/?size=100&id=Lz7oiCpdanST&format=png&color=000000"
+	},
+	{
 		name: "JavaScript",
 		category: "Backend",
 		img: "https://img.icons8.com/fluency/144/javascript.png"
@@ -285,44 +241,30 @@ export const SKILLS = [
 		img: "https://img.icons8.com/fluency/144/node-js.png"
 	},
 	{
-		name: "PHP",
-		category: "Backend",
-		img: "https://img.icons8.com/nolan/64/php-logo.png"
-	},
-	{
 		name: "MySQL",
 		category: "Backend",
 		img: "https://img.icons8.com/color/48/mysql-logo.png"
 	},
 	{
-		name: "MongoDB",
+		name: "Microsoft SQL Server",
 		category: "Backend",
-		img: "https://img.icons8.com/color/48/mongo-db.png"
+		img: "https://img.icons8.com/?size=100&id=laYYF3dV0Iew&format=png&color=000000"
 	},
+
 	{
-		name: "PostgreSQL",
+		name: ".NET",
 		category: "Backend",
-		img: "https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/96/external-postgre-sql-a-free-and-open-source-relational-database-management-system-logo-shadow-tal-revivo.png"
-	},
-	{
-		name: "Firebase",
-		category: "Backend",
-		img: "https://img.icons8.com/color/48/firebase.png"
-	},
-	{
-		name: "Supabase",
-		category: "Backend",
-		img: "https://img.icons8.com/fluency/144/supabase.png"
-	},
-	{
-		name: "Redis",
-		category: "Backend",
-		img: "https://img.icons8.com/fluency/144/redis.png"
+		img: "https://img.icons8.com/?size=100&id=1BC75jFEBED6&format=png&color=000000"
 	},
 	{
 		name: "Docker",
 		category: "DevOps",
 		img: "https://img.icons8.com/fluency/144/docker.png"
+	},
+	{
+		name: "Kubernates",
+		category: "DevOps",
+		img: "https://img.icons8.com/?size=100&id=cvzmaEA4kC0o&format=png&color=000000"
 	},
 	{
 		name: "Git",
@@ -335,11 +277,6 @@ export const SKILLS = [
 		img: "https://img.icons8.com/stickers/50/github.png"
 	},
 	{
-		name: "Bitbucket",
-		category: "DevOps",
-		img: "https://img.icons8.com/color/48/bitbucket.png"
-	},
-	{
 		name: "AWS",
 		category: "DevOps",
 		img: "https://img.icons8.com/nolan/64/amazon-web-services.png"
@@ -347,12 +284,7 @@ export const SKILLS = [
 	{
 		name: "Vercel",
 		category: "DevOps",
-		img: "/assets/icons/vercel.png"
-	},
-	{
-		name: "Jira",
-		category: "DevOps",
-		img: "https://img.icons8.com/color/48/jira.png"
+		img: "/vercel.svg"
 	},
 	{
 		name: "Visual Studio Code",
@@ -375,34 +307,9 @@ export const SKILLS = [
 		img: "https://img.icons8.com/color/48/linux--v1.png"
 	},
 	{
-		name: "gRPC",
-		category: "Backend",
-		img: "/assets/icons/grpc.png"
-	},
-	{
-		name: "Stripe",
-		category: "Backend",
-		img: "https://img.icons8.com/fluency/144/stripe.png"
-	},
-	{
-		name: "FastAPI",
-		category: "Backend",
-		img: "/assets/icons/fastapi.png"
-	},
-	{
-		name: "TensorFlow",
-		category: "Backend",
-		img: "https://img.icons8.com/color/48/tensorflow.png"
-	},
-	{
 		name: "WordPress",
 		category: "Tools",
 		img: "https://img.icons8.com/fluency/144/wordpress.png"
-	},
-	{
-		name: "Confluence",
-		category: "Tools",
-		img: "https://img.icons8.com/fluency/144/confluence.png"
 	},
 	{
 		name: "Slack",
@@ -410,9 +317,9 @@ export const SKILLS = [
 		img: "https://img.icons8.com/color/48/slack.png"
 	},
 	{
-		name: "Trello",
+		name: "Postman",
 		category: "Tools",
-		img: "https://img.icons8.com/color/48/trello.png"
+		img: "https://img.icons8.com/?size=100&id=EPbEfEa7o8CB&format=png&color=000000"
 	},
 	{
 		name: "Figma",
@@ -420,24 +327,9 @@ export const SKILLS = [
 		img: "https://img.icons8.com/fluency/144/figma.png"
 	},
 	{
-		name: "UML",
-		category: "Tools",
-		img: "https://img.icons8.com/external-kiranshastry-lineal-color-kiranshastry/64/external-flow-interface-kiranshastry-lineal-color-kiranshastry.png"
-	},
-	{
 		name: "Microsoft Office",
 		category: "Extra",
 		img: "https://img.icons8.com/color/48/office-365.png"
-	},
-	{
-		name: "Adobe Photoshop",
-		category: "Extra",
-		img: "https://img.icons8.com/color/48/adobe-photoshop--v1.png"
-	},
-	{
-		name: "Adobe Premiere Pro",
-		category: "Extra",
-		img: "https://img.icons8.com/color/48/adobe-premiere-pro--v1.png"
 	},
 	{
 		name: "Leadership",
