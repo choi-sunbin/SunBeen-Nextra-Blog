@@ -1,0 +1,45 @@
+# Javascript를 사용시 주의해야 되는 점
+
+## 호이스팅
+
+- 변수, 함수 선언이 실행 전에 메모리에 등록
+
+  - 코드상에서는 아래에 있어도, 먼저 선언된 것처럼 작동
+
+- let, const도 같이 호이스팅 처리 되지만, 블록 스코프 단위로 작동되기 때문에, 미리 접근 하면, ReferenceError 발생
+
+## 1. == vs === (느슨한 비교 vs 엄격한 비교)
+
+    - == 값만 비교
+    - === 값 + 자료형 비교
+
+## 2 FALSY 값
+
+- false
+- 0
+- ''
+- null
+- undefined
+- NaN
+
+## 3 비동기 코드 착각
+
+```
+    let data;
+
+    fetch('/api').then(res => {
+      data = res;
+    });
+
+    console.log(data); // undefined
+```
+
+## 4. null, undefind
+
+```
+    let a;
+    console.log(a); // undefined 초기화 하지 않았을 경우
+
+    let b = null;
+    console.log(b); // null (의도적으로 null로 초기화한것)
+```

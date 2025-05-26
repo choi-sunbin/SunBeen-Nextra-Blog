@@ -1,0 +1,113 @@
+# 자료형
+
+typeof 자료형의 타입을 반환한다
+입력 : typeof '문자열'
+출력 : string(예시)
+
+## 숫자형 'Number'
+
+## 숫자의 연산
+
+if(0.1 + 0.2 == 0.3) - false : 부동 소수점 연산을 한다.
+
+### 숫자 진법
+
+### 0b : 2진법
+
+0b111 = 7
+typeof 0b111 = "number"
+
+### 0, 0o : 8진법
+
+0111 = 73
+typeof 0111 = "number"
+
+### 0x : 16진법
+
+0x1a1 = 417
+typeof 0x1a1 = "number"
+
+## 특수한 숫자형
+
+### NaN(Not a Number)
+
+숫자는 아니지만 타입은 number이다.
+typeof NaN = "number" - NaN(Not a number)
+
+### Infinit
+
+Infinity 무한
+Infinity 끼리는 비교 연산이 불가능하다.
+
+### 자료형 변환
+
+문자열 -> string
+
+#### Number('123')
+
+    Number('3월') = Nan
+
+#### parseInt('123')
+
+    parseInt('3월') = 3 // 앞자리라도, 숫자로 변경해줌
+
+## 문자열 :
+
+### 문자열을 표현하는 단위 '', "", ``
+
+### ``은 여러줄 표기가 가능하다.
+
+    `ab
+    c`
+
+### 문자열 합치기
+
+'바나나' + '사과'
+'바나나사과'
+
+### 문자열 + number 계산
+
+'123' + 4 = '1234'
+
+### 문자열 Split
+
+str = '1,2,3,4,5,6'
+arr = str.split(',')
+arr = {'1','2','3','4','5','6'}
+
+### 캐릭터 코드 가져오기
+
+'&'.charCodeAt 특수기호에 대한 코드값을 가져온다
+'a'.charCodeAt
+
+## 불형 :
+
+true, false
+
+### 비교
+
+'==' & '==='
+
+- '==' : 값만 비교
+- '===' : 값 + 자료형 비교
+
+### 예외
+
+Nan == Nan(False)
+IsNan을 활용하자.
+
+### boolean에서 false 로 체크 되는 값들
+
+!!false
+!!''
+!!0
+!!Nan
+!!undefined
+!!null
+!!document.all
+
+### Boolean 검사
+
+Boolean('a') : true
+!!'a' : true
+!!'a' == 'a'를 boolean으로 변환하고, 다시 Boolean 형으로 연산한다

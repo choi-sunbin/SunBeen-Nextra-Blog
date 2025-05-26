@@ -1,0 +1,61 @@
+# async/await
+
+async와 await는 비동기 작업을 동기 코드처럼 Promise를 더 간단하고 직관적으로 사용할 수 있게 해줍니다.
+
+```
+  async function 함수명() {
+  await 비동기작업(); // Promise를 반환하는 함수
+  }
+```
+
+## await의 조건
+
+await 함수가 Promise를 반환하는 함수에서 사용되며, 반드시 Async 함수에서 사용.
+
+### 의미있는 await
+
+```
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function run() {
+  console.log("1초 대기 중...");
+  await delay(1000); // delay는 Promise를 반환하므로 await 가능
+  console.log("완료!");
+}
+```
+
+### 의미없는 await
+
+```
+function normalFunction() {
+  return "나는 그냥 문자열이야";
+}
+
+async function run() {
+  const result = await normalFunction(); // 가능은 하지만 의미 없음
+  console.log("result:", result); // "나는 그냥 문자열이야"
+}
+```
+
+## Promise, Await/Async 비교
+
+```
+    // Promise
+
+    fetchData()
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
+```
+
+```
+    // async/await
+
+    try {
+    const data = await fetchData();
+    console.log(data);
+    } catch (err) {
+    console.log(err);
+    }
+```

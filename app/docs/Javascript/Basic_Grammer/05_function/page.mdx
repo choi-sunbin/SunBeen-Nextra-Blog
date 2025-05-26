@@ -1,0 +1,104 @@
+# 함수 선언문
+
+## 함수 선언문
+
+```
+    1. const a = (element) => {return}
+    2. function a(element) { return }
+
+    return 이 없으면 함수는 undefined를 리턴한다.
+```
+
+## 객체 리터럴
+
+```
+    const var = {
+        a : 1,
+        b : 2,
+        '2 a': 3,
+        '2a' : 4,
+        '3-c': 5,
+
+        log : function () {
+            console.log('Method = 객체 내부에 있는 함수는 메서드라고 합니다.')
+        }
+    }
+
+    var.2 a    // ❌ 문법에러
+    console.log(var['2 a']);   // ✅ 3
+    console.log(var['2a']);    // ✅ 4
+    console.log(var['3-c']);   // ✅ 5
+
+```
+
+## 콜백 함수, 리스너 함수
+
+```
+    documentQuerySelector('button').addEventListener('click', function() {
+        console.log(1)
+    });
+
+    function() {} 에 들어가는 내용을
+    콜백 함수(해당 이벤트에 콜해서 이후에 동작한다.) , 리스너 함수
+```
+
+## 선언과 동시에 실행하기
+
+(function () {})()
+
+## 콜백 함수
+
+### 동기 콜백(Synchronous Callback)
+
+```
+    즉시 실행되는 콜백
+    메인 코드 흐름이 멈추지 않고 순서대로 실행
+    코드가 위에서 아래로 순차적으로 실행됨.
+    작업이 끝나야 다음 코드가 실행됨.
+    forEach, map에서 사용되는 함수가 콜백 함수라고 볼 수 있음
+
+    function greet(name, callback) {
+    console.log('안녕, ' + name);
+    callback(); // 즉시 실행되는 콜백
+    }
+
+    greet('철수', () => {
+    console.log('콜백 함수 실행!');
+    });
+
+    console.log('끝났어!');
+```
+
+### 비동기 콜백(Asynchronous Callback)
+
+    나중에 실행되는 콜백
+
+    바로 실행되는 게 아니라 특정 작업이 끝난 다음에 실행
+    코드가 동시에 여러 개 돌고 있는 것처럼 보임.
+    작업이 완료된 뒤 콜백이 실행되니까, 순서가 보장되지 않을 수 있음.
+    대표적으로 setTimeout, addEventListener, Ajax 호출에서 자주 씀.
+
+    비동기 콜백 함수는
+
+    1. 비동기 작업(타이머, AJAX 등)이 시작됨
+    2. 브라우저(Web APIs)가 대신 처리함
+    3. 작업이 끝나면 콜백 함수를 태스크 큐에 넣음
+    4. 이벤트 루프가 콜 스택이 비었는지 확인하고, 비었으면 태스크 큐에서 꺼내 실행
+
+```
+    console.log('시작!');
+
+    setTimeout(() => {
+    console.log('3초 뒤 실행되는 비동기 콜백');
+    }, 3000);
+
+    console.log('끝!');
+```
+
+1. console.log('시작') → 바로 콜 스택에 올라가서 실행되고 출력됨.
+2. setTimeout()
+   → 브라우저(Web APIs)에 등록됨.
+   → 2000ms 타이머가 시작되고, 콜백 함수는 기다림 상태.
+   console.log('끝') → 콜 스택에 올라가서 실행됨.
+3. 2초 후, 브라우저가 "다 끝났어!"라고 하면서 콜백 함수를 태스크 큐(Task Queue)에 추가.
+4. 이벤트 루프(Event Loop)가 콜 스택이 비었는지 확인하고, 비면 큐에서 콜백을 꺼내 실행!

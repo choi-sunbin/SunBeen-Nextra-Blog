@@ -1,0 +1,62 @@
+# 프로미스 (Promise)
+
+자바스크립트에서 제공하는 비동기를 간편하게 처리할 수 있도록 도와주는 오브젝트
+
+정해진 장시간의 기능을 수행하고 나서, 정상적으로 처리되었다면, 성공의 메시지와 함께 처리된 결과값을 전달, 실패 했다면, 에러를 전달해줍니다.
+
+---
+
+중요 : 결과를 나중에 받을 수는 있지만, 생성 자체는 "지금 당장" 실행되는 비동기 작업을 시작
+
+1. 상태에 대한 이해
+
+- pending 수행중
+- fulfilled 정상처리
+- rejected 에러 처리
+
+state pending -> fulfilled or rejected
+
+2. 프로듀스와 컨슈머
+
+생성
+
+Promise는 class
+
+1. Producer
+   promise를 만드는 순간 executor가 자동적으로 실행 됨
+   네트워크 요청을 사용자가 요구했을때만 해야되는 경우 라면, 불필요한 처리가 수행 될 수있음.
+
+   - resolve -> 정상 처리 함수
+   - reject -> 오류 처리 함수
+
+2. Consumers : then, catch, finally
+
+```
+   // 선언만 해도 실행됩니다.
+
+   const promise = new Promise((resolve, reject) => {
+      // 큰 작업 네트워크(Restful API), 파일 읽기
+
+      console.log('doing something...');
+      setTimeout(()=>{
+         resolve('OK');
+      }, 500);
+   })
+
+   promise.then((value) => {
+      console.log(value);
+   })
+```
+
+만약 선언은 해두고 실행은 나중에 하고 싶다면,
+
+```
+   const createPromise = () => {
+      return new Promise((resolve) => {
+         console.log("선언과 동시에 실행되지 않음");
+         resolve("끝!");
+   });
+};
+
+const promise = createPromise(); // 이때 실행됨
+```

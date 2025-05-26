@@ -1,0 +1,33 @@
+# 클로저(Closure)
+
+- 클로저(Closure)
+  - 자바스크립트에서 함수가 선언될 당시의 스코프(변수 환경) 를 기억한다.
+  - 함수가 나중에 실행되더라도, 기억한 실행 환경을 스코프로 접근할 수 있는 기능
+  - 비동기 작업(예: setTimeout, AJAX 호출 등)은 나중에 실행
+
+```
+    function outer() {
+        let count = 0; // 외부 변수
+
+        return function inner() {
+            count++;
+            console.log("현재 count:", count);
+        };
+    }
+
+    const counter = outer();  // outer() 실행 → inner 함수 리턴됨
+    counter(); // 현재 count: 1
+    counter(); // 현재 count: 2
+    counter(); // 현재 count: 3
+
+```
+
+```
+    - outer() 실행이 끝난 후에도
+    - inner()는 count에 계속 접근 가능
+
+    - count는 outer() 스코프 안의 변수이지만,
+    - inner()가 계속 참조 중 이기 때문에,
+    - GC(Garbage Collector)에 의해 제거되지 않음.
+
+```

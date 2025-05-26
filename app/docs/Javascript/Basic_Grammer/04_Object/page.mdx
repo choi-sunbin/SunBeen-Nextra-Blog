@@ -1,0 +1,95 @@
+# 객체
+
+## 선언
+
+    const var {}
+
+## 기능
+
+    모든 내용을 포함하여 Key, Value 형태로 저장이 가능하다.
+
+### 객체 리터럴
+
+    특수문자, 혹은 공백 포함일떄는 ''를 포함시키면 된다.
+
+### 메서드
+
+    객체 내부에 있는 함수
+
+```
+{
+    a : 1,
+    b : 2
+    '2 a': 3, //객체 리터럴
+    '2a' : 4, //객체 리터럴
+    '3-c': 5, //객체 리터럴
+
+    log : function () { // 메서드
+        console.log('Method = 객체 내부에 있는 함수는 메서드라고 합니다.')
+    }
+}
+```
+
+### 옵셔널 체이닝
+
+    객체 내부의 값이 진짜 있는지 없는지 확인을 할 때 주로 사용되며 값이 있으면, 제대로된 값을, 없을때는 undefined를 호출한다.
+
+```
+    const sunbin = {
+        name: {
+            first : 'choi',
+            last : 'been',
+        }
+        age : 30,
+        known: [
+            {
+                name: "first item",
+                first: function (a, b) {
+                    return `첫 번째 객체 - 받은 인자: ${a}, ${b}`;
+                }
+            },
+            {
+                name: "second item",
+                first: function (a, b) {
+                    return `두 번째 객체 - 받은 인자: ${a}, ${b}`;
+                }
+            }
+        ],
+    }
+```
+
+#### 옵셔널 체이닝 배열
+
+```
+sunbin.unknown?.[0].first()
+
+베열에서는 [?.] 세트로 같이 써야합니다.
+```
+
+#### 옵셔널 체이닝 예시
+
+```
+sunbin.name.first
+    -- choi
+
+sunbin.name.middle
+    -- undefind
+
+sunbin.unknown.first
+    - ERROR
+sunbin.unknown?.name :
+    - undefind
+
+
+unknown?
+    - 데이터 O
+        - 기본 데이터
+    - 데이터 X
+        - undefind
+
+sunbin.unknown?.first
+```
+
+#### 남용
+
+sunbin?.first?.second?.third?.hello 같이 남용될 수 있다.

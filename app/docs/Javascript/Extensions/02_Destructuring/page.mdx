@@ -1,0 +1,49 @@
+# 구조 분해
+
+객체의 일부 속성들을 한번에 구조를 분해해서, 할당하는것을 의미한다.
+
+```
+const {body} = document;
+
+const body = document.body;
+
+const {body, createElement} = document 구조분해 할당, Destructring
+
+const arr = [1,2,3,4,5];
+
+const one = [1];
+const two = [2];
+const three = [3];
+const four = [4];
+const five = [5];
+
+const [one, two, three, four, five] = arr;
+일부 할당
+const [one, , , four, five] = arr;
+
+const obj = {
+    a: 'hello',
+    b: {
+    c: 'hi',
+        d: { e: 'wow'},
+    },
+}
+```
+
+- 말단 직접 값이 있는 객체만 데이터를 가져올 수 있다.
+- b, d는 변수로 할당 되지 않는다.
+
+```
+const {a, b: {c, d: {e} } } = obj;
+const a = obj.a;
+const c = obj.b.c;
+const e = obj.b.d.e;
+
+a,b,e를 가져오고 싶다면,
+const {a, b} = obj;
+const {d:e} = b;
+
+const a = obj.a;
+const b = obj.b;
+const e = obj.b.d.e;
+```
