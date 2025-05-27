@@ -1,0 +1,62 @@
+# Python으로 Excel 관리 소스
+
+## 사전 준비
+
+- pip install pandas
+- pip install openpyxl
+
+## 소스 코드
+
+```python
+import pandas as pd
+
+file_name = "Excel.xlsx"
+
+
+# 엑셀 파일 읽기
+df = pd.read_excel(file_name, skiprows=1, header=[0,1], sheet_name="Sheet1")
+
+# 첫 Rows 제거
+df = df.drop(columns=[('Unnamed: 0_level_0', 'Unnamed: 0_level_1')])
+
+# Unnamed 제거
+df.columns.to_frame()
+
+# 기존 멀티인덱스 → 리스트로 변환
+new_columns = [
+    (a if not str(a).startswith("Unnamed") else "",
+    b if not str(b).startswith("Unnamed") else "")
+    for a, b in df.columns
+]
+
+# 재할당
+df.columns = pd.MultiIndex.from_tuples(new_columns)
+
+# '상위하위' 식으로 컬럼명 합치기
+df.columns = ['{}{}'.format(a, b) for a, b in df.columns]
+
+# .1 컬럼 자동 제거 (빈 테이블 제거)
+df = df.loc[:, ~df.columns.str.contains(r'\.\d+$')]
+
+# 행과 열 출력 제한 해제
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+
+for i in range(len(df)) :
+    s = ""
+    for j in range(len(df.iloc[i])) :
+        val = df.iloc[i, j]
+        if isinstance(val, pd.Timestamp):
+            s += "'"+ val.strftime('%Y-%m-%d') + "'"
+        elif isinstance(val, float):
+            s += str(int(val))
+        elif isinstance(val, int):
+            s += str(val)
+        elif isinstance(val, str):
+            s += "'" + val + "'"
+        else:
+            s += str(val)
+        s += ","
+    s = s[:-1]
+    print(s)
+```

@@ -11,5 +11,9 @@ export default {
 	about: {
 		title: "About",
 		type: "page"
+	},
+	work: {
+		title: "Work",
+		type: "page"
 	}
 };
