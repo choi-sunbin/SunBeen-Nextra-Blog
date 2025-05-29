@@ -78,57 +78,86 @@
 | **sc-win32-status** | Windows 기반 상태 코드 (Winsock 오류 등, 0이면 정상)               |
 | **time-taken**      | 요청 처리 시간 (밀리초 기준, 예: 109ms)                            |
 
-### Robots.txt
+## Robots.txt
 
 - 위치 :
   - 서버 별 루트 디렉토리
 - 역활
+
   - 웹사이트에 웹 크롤러 같은 로봇들의 접근을 제어하기 위한 규약
   - 권고 사항이기 때문에, 지켜야할 의무는 없다.
-- 문법
+
+### User-agent
+
+- 내용
+  - robots.txt 에서 지정하는 크롤링 규칙이 적용되어야 할 크롤러를 지정합니다.
+- 종류 예시
+  - Googlebot
+  - bingbot
+  - Facebot
+  - Microsoft Azure
 
 ```
-#   User-agent : robots.txt 에서 지정하는 크롤링 규칙이 적용되어야 할 크롤러를 지정
-#
-#   모든 검색 엔진 봇에 적용
+# 모든 검색 엔진 봇에 적용
       User-agent: *
 #   구글 봇에만 적용
       User-agent: Googlebot
-#
-#   Disallow
-#    - 지정한 경로를 크롤링 금지
-#    - /는 사이트 전체 금지
-#    - 공백이면 "제한 없음"
-#    - 대소문자 구분 불가
-#
-#   Allow
-#   - 크롤링을 허용할 경로
-#
+```
+
+### Disallow
+
+- 지정한 경로를 크롤링 금지
+- /는 사이트 전체 금지
+- 공백이면 "제한 없음"
+
+### Allow
+
+- 크롤링을 허용할 경로
+
+> [!WARNING]
+>
+> Disallow 와 Allow의 Url 링크는 대소문자를 구분하지 못합니다!! 꼭 주의해주세요.
+
+```
+
 # /admin/ 아래 모든 페이지 금지
+
     Disallow: /admin/
 
 # /product/ 아래 모든 페이지 허용
+
     Allow: /product/
 
 # 특정 파일 금지
+
     Disallow: /private.html
 
 # 전체 사이트 금지
+
     Disallow: /
 
 # 크롤링 금지 없음
+
     Disallow:
 
-# ---
-# 예시1
+```
 
-# 모든 크롤러가 사이트 전체 접근 가능
+### 예시
+
+- 모든 크롤러가 사이트 전체 접근 가능
+
+```
     User-agent: *
     Disallow:
+```
 
-# ---
-# 예시2
-# 구글봇은 /admin/ 아래 차단
+### 예시2
+
+- 구글 봇의 /admin/ 하위 경로들 전부 차단
+
+```
+
     User-agent: Googlebot
     Disallow: /admin/
+
 ```
