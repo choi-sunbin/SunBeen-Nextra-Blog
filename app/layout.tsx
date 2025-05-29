@@ -76,7 +76,7 @@ export default async function RootLayout({
 							defaultTheme: "dark"
 						}}
 						darkMode={false}
-						docsRepositoryBase="https://github.com/shuding/nextra/tree/main/docs"
+						docsRepositoryBase="https://github.com/choi-sunbin/SunBeen-Nextra-Blog/tree/main/app/docs"
 						footer={footer}
 						// ... Your additional layout options
 					>
