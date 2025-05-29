@@ -1,31 +1,33 @@
 {
-  "name": "sunbeen-blog",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@mui/material": "^7.1.0",
-    "lucide-react": "^0.511.0",
-    "next": "15.3.2",
-    "nextra": "^4.2.17",
-    "nextra-theme-docs": "^4.2.17",
-    "radix-ui": "^1.4.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+	"name": "sunbeen-blog",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint",
+		"postbuild": "pagefind --site .next/server/app --output-path public/_pagefind"
+	},
+	"dependencies": {
+		"@emotion/react": "^11.14.0",
+		"@emotion/styled": "^11.14.0",
+		"@mui/material": "^7.1.0",
+		"lucide-react": "^0.511.0",
+		"next": "15.3.2",
+		"nextra": "^4.2.17",
+		"nextra-theme-docs": "^4.2.17",
+		"radix-ui": "^1.4.2",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0"
+	},
+	"devDependencies": {
+		"@tailwindcss/postcss": "^4",
+		"@types/node": "^20",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"pagefind": "^1.3.0",
+		"tailwindcss": "^4",
+		"typescript": "^5"
+	}
 }
