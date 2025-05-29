@@ -62,7 +62,10 @@ export default async function RootLayout({
 			suppressHydrationWarning
 		>
 			<Head
-			// ... Your additional head options
+				color={{ hue: 110, saturation: 60 }}
+				backgroundColor={{ dark: "#333333" }}
+
+				// ... Your additional head options
 			>
 				{/* Your additional tags should be passed as `children` of `<Head>` element */}
 			</Head>
