@@ -29,6 +29,30 @@ export const SOCIALS = [
 	}
 ];
 
+export const ROAD_MAP = [
+	{
+		name: "Docker",
+		icon: "/assets/docker.svg",
+		describe: "애플리케이션을 컨테이너 단위로 격리하고 이식성 있게 배포하기 위해 학습중 입니다."
+	},
+	{
+		name: "CI/CD",
+		icon: "/assets/jenkins.svg",
+		describe: "코드 변경 사항을 자동으로 테스트하고 배포하기 위한 자동화 파이프라인 구성하기위해 학습 예정입니다."
+	},
+	{
+		name: "Kubernetes",
+		icon: "/assets/kubernetes.svg",
+		describe: "컨테이너 오케스트레이션을 배워 안정성과 확장성을 갖춘 운영 인프라를 구현하기 위해 학습 예정입니다."
+	},
+	{
+		name: "AWS",
+		icon: "/assets/aws.svg",
+		describe:
+			"클라우드 인프라 환경에서 서비스를 구축하고 운영하기 위해 AWS의 주요 서비스(EC2, S3, IAM, VPC 등)를 학습 예정입니다."
+	}
+];
+
 export const PROJECTS = [
 	{
 		title: "symptomstream v0.1",
@@ -284,7 +308,7 @@ export const SKILLS = [
 	{
 		name: "Vercel",
 		category: "DevOps",
-		img: "/vercel.svg"
+		img: "/assets/vercel.svg"
 	},
 	{
 		name: "Visual Studio Code",
