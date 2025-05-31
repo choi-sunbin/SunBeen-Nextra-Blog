@@ -1,0 +1,100 @@
+# 도커가 실행되는 과정
+
+# 1. 컴퓨터 전원 On → BIOS/UEFI 실행
+
+- 컴퓨터를 켜면, 가장 먼저 **메인보드에 내장된 펌웨어**인 **BIOS**(Basic Input/Output System) 또는 **UEFI**(Unified Extensible Firmware Interface)가 실행됨
+- BIOS/UEFI의 역할:
+    - 하드웨어 초기화 (CPU, RAM, 디스크, 키보드 등)
+    - POST(Power-On Self-Test) 수행
+    - 부팅 가능한 장치 탐색 및 우선순위 설정
+    - 부트로더(bootloader)를 메모리에 로딩하여 실행
+
+> 참고: 2010년 이후 대부분의 PC는 BIOS 대신 UEFI를 사용하지만, 일반적으로 "BIOS"라는 표현이 관습적으로 사용됨
+> 
+
+---
+
+## 2. Windows 설치 과정 (커널 포함)
+
+- BIOS/UEFI 설정에서 부팅 순서를 **USB > SSD**로 설정
+- 부팅 가능한 **Windows 설치 USB**를 연결하고 부팅
+- USB 내부 구조:
+    - `boot.wim` : 설치 프로그램이 실행될 Windows PE 환경
+    - `install.wim` 또는 `install.esd` : 실제 Windows 운영체제 이미지 (커널 포함)
+
+### 설치 중 발생하는 일:
+
+- `bootmgr` 또는 `EFI/boot/bootx64.efi`가 로드됨 → 설치 GUI 진입
+- 사용자가 디스크를 선택하고 Windows 설치
+- 이 과정에서 `ntoskrnl.exe` (Windows 커널)가 디스크에 설치됨
+- 재부팅 후, 부트로더는 Windows 커널을 RAM에 로드하여 운영체제를 시작
+
+> Windows 커널 파일 경로: C:\Windows\System32\ntoskrnl.exe
+> 
+
+---
+
+## 3. Hyper-V 활성화
+
+- Docker를 설치하기 전, Windows에서 **가상화 기능(Hyper-V)**를 활성화해야 함
+- Hyper-V는 CPU의 가상화 지원(Intel VT-x / AMD-V)을 기반으로 작동하는 **하이퍼바이저**로, 독립적인 가상 머신을 실행할 수 있게 함
+
+### Hyper-V 활성화 방법:
+
+- `Windows 기능 켜기/끄기` 메뉴에서 "Hyper-V" 체크
+- 또는 PowerShell에서 다음 명령 실행:
+    
+    ```
+    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+    ```
+    
+- 시스템 재시작 후 활성화됨
+
+---
+
+## 4. Docker Desktop 설치
+
+- Docker 공식 홈페이지에서 Docker Desktop for Windows 다운로드
+- 설치 중:
+    - Hyper-V 또는 WSL2 기반 중 선택 가능 (기본: WSL2)
+    - 도커 엔진, 도커 CLI, Kubernetes(옵션), Docker Compose 등이 함께 설치됨
+
+---
+
+## 5. Docker가 리눅스 커널을 사용하는 구조
+
+Docker는 **리눅스 커널 기능(Cgroups, Namespaces)**을 필요로 하기 때문에,
+Windows에서는 아래 두 가지 방식 중 하나를 통해 **리눅스 커널 환경을 만듭니다**:
+
+### 옵션 1: WSL2 (기본, 최신 방식)
+
+- Microsoft가 만든 **경량 리눅스 VM**
+- 실제 리눅스 커널이 `\wsl$` 경로에서 실행됨
+- Docker는 이 리눅스 커널 위에서 컨테이너 실행
+
+### 옵션 2: Hyper-V + LinuxKit (예전 방식)
+
+- Docker가 Hyper-V를 통해 **LinuxKit이라는 전용 리눅스 VM**을 생성
+- 이 VM 위에서 Docker 컨테이너가 실행됨
+
+> 사용자는 둘 중 어떤 방식이 쓰이는지 몰라도 되며, Docker Desktop이 자동으로 선택 및 관리함
+> 
+
+---
+
+## 6. Dockerfile / docker-compose.yaml 실행 과정
+
+- 사용자가 작성한 Dockerfile은 베이스 이미지(OS), 패키지 설치, 명령어 등을 정의
+- docker build → WSL2 또는 Hyper-V VM 내부에서 컨테이너 이미지 생성
+- docker run → 해당 리눅스 커널 위에서 컨테이너 실행
+
+| 용어 | 설명 |
+| --- | --- |
+| **boot.wim** | Windows 설치 USB에서 설치 화면(GUI)을 실행하는 파일 |
+| **install.wim** | 실제 Windows 운영체제가 담긴 이미지 파일이에요. 설치시 여기서 복사해서 사용  |
+| **ntoskrnl.exe** | Windows의 핵심 커널 파일 |
+| **bootmgr** | Windows 부팅 시 가장 먼저 실행되는 부트로더 프로그램 |
+| **EFI/boot/bootx64.efi** | UEFI 환경에서 부트로더 역할을 하는 실행 파일 bootmgr의 대체 |
+| **Intel VT-x** | 인텔 CPU가 제공하는 가상화 지원 기술Hyper-V가 이걸 활용 |
+| **AMD-V** | AMD CPU의 가상화 지원 기술 Hyper-V가 이걸 활용 |
+| **LinuxKit** | Docker가 리눅스를 쓰기 위해 만든 아주 작은 리눅스 운영체제 |
