@@ -1,0 +1,120 @@
+# 다중 컨테이너 연습
+
+- **백엔드 + DB + 프론트엔드** 등, 여러 서비스가 연동된 구조 연습
+
+## **MongoDB (데이터베이스)**
+
+- 사용자 목표 데이터를 저장하는 역할
+- 컨테이너화 시, **데이터의 영속성 유지**와 **보안 설정(계정/비밀번호)** 필요
+
+### 데이터 **영속성 유지**
+
+Docker hub URL : [https://hub.docker.com/\_/mongo](https://hub.docker.com/_/mongo)
+
+![image.png](./image.png)
+
+- 데이터 위치 : /data/db
+  - Named Volume (명명된 볼륨) 사용
+  - Bind Mount를 이용하여, 데이터 로컬 저장
+
+### **보안 설정(계정/비밀번호)**
+
+- 계정 정보 환경 변수로 지정하기
+  - `MONGO_INITDB_ROOT_USERNAME` : 루트 ID 설정
+  - `MONGO_INITDB_ROOT_PASSWORD` : 루트 비밀번호
+
+### Docker run 키워드
+
+```docker
+docker run \
+-p 80:80
+-e MONGO_INITDB_ROOT_USERNAME=max \
+-e MONGO_INITDB_ROOT_PASSWORD=secret
+```
+
+### Dockerfile 환경 변수 설정
+
+```docker
+Dockerfile
+
+ENV MONGODB_USERNAME=max
+ENV MONGODB_PASSWORD=secret
+
+CMD ["npm", "start"]
+```
+
+참고 문서 : [https://www.mongodb.com/ko-kr/docs/drivers/node/current/connect/connection-troubleshooting/#std-label-node-troubleshooting-connection-admin](https://www.mongodb.com/ko-kr/docs/drivers/node/current/connect/connection-troubleshooting/#std-label-node-troubleshooting-connection-admin)
+
+## **Backend (Node.js + Express API 서버)**
+
+- REST API 제공 (JSON 송수신)
+- 클라이언트(프론트엔드)와 MongoDB 간의 중계자
+- 로그(`logs/`)가 로컬 파일로 남기 때문에 **로그 유지 전략 필요 (volume)**
+
+### Backend 환경 변수 사용하기 (NodeJS)
+
+![image.png](./image%201.png)
+
+### 예제 ) NodeJS
+
+```bash
+const uri = "mongodb://<db_username>:<db_password>@<hostname>:<port>/?authSource=users";
+```
+
+- `max:secret@mongodb`: 사용자 인증 정보
+- `?authSource=admin`: 인증할 데이터베이스 명시 (안 하면 인증 오류 발생)
+
+```bash
+mongoose.connect(
+	mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mongodb:27017/goals
+)
+```
+
+### **로그 유지 전략 -** 바인드 마운트
+
+```docker
+Dockerfile
+
+VOLUME=["/app/logs"]
+```
+
+```docker
+docker run \
+-v /logs:/app/logs
+```
+
+## **Frontend (React SPA)**
+
+- 브라우저에서 실행되는 단일 페이지 앱
+- Node API 서버와 통신하여 사용자 목표를 조회, 추가, 삭제
+- 개발 시 코드 수정 반영을 위한 **핫 리로딩 설정 필요 (bind mount)**
+
+### 🔐 컨테이너화 시 고려사항
+
+---
+
+### 🧪 개발 서버 구성 예
+
+- `localhost:80` → Node API 서버
+- `localhost:3000` → React 개발 서버
+
+## 📌 정리: 브라우저에서 가능한 주소와 불가능한 주소
+
+| 요청 주소                        | 브라우저에서 사용 가능? | 설명                                                 |
+| -------------------------------- | ----------------------- | ---------------------------------------------------- |
+| `http://localhost:3000`          | ✅ 가능                 | 프론트 컨테이너의 3000포트에 연결됨 (`-p 3000:3000`) |
+| `http://localhost:80`            | ✅ 가능                 | 백엔드 컨테이너의 80포트에 연결됨 (`-p 80:80`)       |
+| `http://host.docker.internal:80` | ✅ 가능 (Windows/Mac)   | 호스트의 포트를 컨테이너에서 접근할 때 사용          |
+| `http://multi-back-app:80`       | ❌ 불가능               | 브라우저는 이 이름을 DNS로 해석 못함                 |
+
+### host.docker.internal
+
+- 호스트의 IP로 도메인 등록
+- 도커가 **`host.docker.internal`이라는 도메인을 미리 등록**해준 URL
+
+### ※ 주의 - 브라우저 Front로 컨테이너 이름으로 접속이 안되는 이유
+
+- 컨테이너와 컨테이너가 네트워크를 할 경우 Docker Network를 공유하여 사용했었습니다.
+- 브라우저는 컨테이너 내에 소속되어 있지 않아 multi-back-app은 호스트 DNS가 아닙니다.
+- 브라우저는 호스트의 DNS만 접속이 가능합니다.
+- [localhost](http://localhost)와 host.docker.internal 만이 호스트에서 접근 가능합니다.

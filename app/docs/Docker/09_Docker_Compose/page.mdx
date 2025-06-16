@@ -1,0 +1,131 @@
+# Docker Compose
+
+## 도커 컴포즈(Docker Compose)의 필요성을 느낀 순간
+
+이전 모듈에서는 세 가지 컨테이너를 조합하여 하나의 애플리케이션을 만들었습니다:
+
+- **MongoDB**: 데이터베이스
+- **Node.js (Express)**: 백엔드 API
+- **React**: 프론트엔드 SPA
+
+각 컨테이너는 다음과 같은 구성 요소를 포함했습니다:
+
+- 네트워크
+    - docker network create test_network
+    - —network test_network
+- 환경 변수 설정
+    - -e MONGO_INITDB_ROOT_USERNAME=root
+- 포트 노출
+    - -p 3000:3000
+- 볼륨 마운트
+    - -v temp:/app/volume
+- 바인드 마운트
+    - -v “$(pwd):/app”  → 실시간 코드 백업용
+    - -v /logs:/app/logs → 로그 백업용
+
+처음에는 수동으로 아래 작업들을 수행해야 했습니다:
+
+1. 사용자 정의 네트워크 생성
+2. MongoDB 컨테이너 실행 (환경 변수 및 볼륨 포함)
+3. 백엔드 이미지 빌드
+4. 백엔드 컨테이너 실행 (환경 변수, 볼륨, 네트워크 설정 포함)
+5. 프론트엔드 이미지 빌드
+6. 프론트엔드 컨테이너 실행 (바인드 마운트, 포트 매핑 등 포함)
+7. 종료 시 각 컨테이너 중지 및 네트워크/볼륨 수동 정리
+
+> 명령이 많아지고 길어질수록, 실수할 확률도 높고 관리도 어려워집니다.
+> 
+
+## Docker Compose는 무엇을 해주나요?
+
+- **Docker 명령어들을 하나의 설정 파일로 관리**할 수 있게 해주는 도구
+    - `docker build`
+    - `docker run`
+- 여러 개의 컨테이너를 자동으로 관리하고 실행 순서, 연결, 빌드 등을 한꺼번에 처리할 수 있는 명령어 모음 : 오케스트레이션 명령 셋
+- ※  오케스트레이션
+    - 지휘자가 각 악기를 조율하듯, 도커 컴포즈는 각 컨테이너(=서비스)를 조율하며 동시에 제어
+        - 순서 조정 (`depends_on`)
+        - 네트워크 공유
+        - 환경 변수 설정
+        - 볼륨 마운트
+        - 자동 빌드
+- 이미지, 컨테이너, Dockerfile을 대체하지 않습니다.
+    - 도커 작업을 원활하게 만들어주는 도우미
+- 여러 호스트를 사용하며, 다중 컨테이너를 관리하는 데에 적합히지 않음  (k8s)
+    - 하나의 동일한 호스트에서 다중 컨테이너를 관리하는데 장점
+
+## Docker Compose 시작하기
+
+공식 URL : [https://docs.docker.com/reference/compose-file/](https://docs.docker.com/reference/compose-file/)
+
+### 프로젝트 구성
+
+프로젝트 폴더는 다음과 같은 구조를 가집니다:
+
+```
+project/
+├── backend/
+│   └── Dockerfile
+├── frontend/
+│   └── Dockerfile
+└── docker-compose.yaml
+```
+
+각 서비스 디렉토리에 Dockerfile이 있으므로, Compose에서는 이를 그대로 참조하게 됩니다.
+
+도커 컴포즈는 자동으로 디폴트 네트워크를 생성해서, 네트워크를 할당한다.
+
+```yaml
+# services: 이 앱에서 사용할 모든 컨테이너를 정의합니다.
+#           각 컨테이너는 하나의 서비스로 표현됩니다.
+service:
+  # MongoDB 관련 설정
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    # 환경변수 설정
+    #environment:
+    # - MONGO_INITDB_ROOT_USERNAME=max 
+    #  MONGO_INITDB_ROOT_USERNAME: max
+    #  MONGO_INITDB_ROOT_PASSWORD: secret
+    # 환경변수 파일 사용
+    env_file:
+      - ./env/mongo.env
+		# 네트워크를 직접 지정 가능
+		networks:
+		  - goals-net
+  # Node 백엔드 설정
+  backend:
+    #  build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: goals-node
+    ports:
+      - "80:80"
+    volumes:
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    env_file:
+      - ./env/backend.env
+    depends_on:
+      - mongodb
+
+  # React 프론트엔드 설정
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+
+#명명된 볼륨은 volumes 명시해주어야 합니다.
+volumes: 
+	- data: 
+	- logs:
+	
+```
