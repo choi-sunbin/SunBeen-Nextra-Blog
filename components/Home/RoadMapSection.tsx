@@ -3,6 +3,7 @@ import { ROAD_MAP } from "@/constants";
 
 import React from "react";
 import Image from "next/image";
+import { MilestoneItem, MilestoneItemProps, ProgressStatus } from "@/types/types";
 
 // 상태 표시 타입
 type Status = {
@@ -11,31 +12,28 @@ type Status = {
 };
 
 const STATUS_LIST: Status[] = [
-  { label: "대기", color: "white" },
-  { label: "진행", color: "orange" },
-  { label: "완료", color: "lime" },
+  { label: "대기", color: "#e2e8f0" },
+  { label: "진행", color: "#fbbf24" },
+  { label: "완료", color: "#22c55e" },
 ];
-
-type ProgressStatus = "pending" | "progress" | "completed";
 
 // 상태 → 색상 매핑
 const ProgressColors: Record<ProgressStatus, string> = {
-  pending: "white",
-  progress: "orange",
-  completed: "lime",
+  pending: "#e2e8f0",
+  progress: "#fbbf24",
+  completed: "#22c55e",
 };
 
-type TechStack = {
-  name: string;
-  icon: string;
-  progress: string;
-};
-
-const TECH_STACK: TechStack[] = [
-  { name: "Docker", icon: "/assets/docker.svg", progress: "progress" },
-  { name: "Jenkins", icon: "/assets/jenkins.svg", progress: "pending" },
-  { name: "Kubernetes", icon: "/assets/kubernetes.svg", progress: "pending" },
+const TECH_STACK: MilestoneItem[] = [
+  { name: "Docker", icon: "/assets/docker.svg", progress: "completed" },
+  // { name: "Jenkins", icon: "/assets/jenkins.svg", progress: "pending" },
+  { name: "Kubernetes", icon: "/assets/kubernetes.svg", progress: "progress" },
   { name: "AWS", icon: "/assets/aws.svg", progress: "pending" },
+];
+
+const CERTIFICATE_STACK: MilestoneItem[] = [
+  { name: "CKA", icon: "/assets/cka.webp", progress: "pending" },
+  { name: "AWS SAA", icon: "/assets/AWS-SAA.png", progress: "pending" },
 ];
 
 const StatusLegend = () => (
@@ -58,32 +56,45 @@ const StatusLegend = () => (
   </div>
 );
 
-const RoadMapProgress = () => (
-  <div className="flex items-center justify-center flex-wrap gap-4">
-    {TECH_STACK.map((tech, index) => (
-      <React.Fragment key={tech.name}>
-        <Box
-          sx={{
-            width: 150,
-            height: 150,
-            backgroundColor: ProgressColors[tech.progress as ProgressStatus],
-            padding: 2,
-            borderRadius: 3,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            border: "5px solid #000",
-          }}
-        >
-          <Image src={tech.icon} alt={tech.name} width={80} height={100} style={{ objectFit: "contain", padding: 2 }} />
-        </Box>
-        {index < TECH_STACK.length - 1 && (
-          <Image src="/arrow-60.png" alt="Arrow" width={60} height={60} className="mx-2" />
-        )}
-      </React.Fragment>
-    ))}
-  </div>
-);
+const MileStoneSection: React.FC<MilestoneItemProps> = ({ stack }) => {
+  return (
+    <div className="flex items-center  justify-center flex-wrap gap-4 pb-5 border-b border-gray-600">
+      {stack.map((tech, index) => (
+        <React.Fragment key={tech.name}>
+          <Box
+            sx={{
+              width: 150,
+              height: 150,
+              backgroundColor: ProgressColors[tech.progress],
+              padding: 2,
+              borderRadius: 3,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              border: "5px solid #000",
+              transition: "transform 0.3s ease-in-out",
+              "&:hover": {
+                transform: "scale(1.05)",
+                boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.3)",
+              },
+            }}
+          >
+            <Image
+              src={tech.icon}
+              alt={tech.name}
+              width={80}
+              height={100}
+              style={{ objectFit: "contain", padding: 2 }}
+            />
+          </Box>
+          {index < stack.length - 1 && (
+            <Image src="/arrow-60.png" alt="Arrow" width={60} height={60} className="mx-2" />
+          )}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+};
 
 export function RoadMapSection() {
   return (
@@ -98,7 +109,9 @@ export function RoadMapSection() {
             {/* Road Map Description */}
             <StatusLegend />
             {/* Road Map Progress */}
-            <RoadMapProgress />
+            <MileStoneSection stack={TECH_STACK} />
+            <h3 className="text-2xl py-4 font-medium">목표</h3>
+            <MileStoneSection stack={CERTIFICATE_STACK} />
           </div>
         </div>
       </div>
