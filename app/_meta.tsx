@@ -11,5 +11,9 @@ export default {
 	work: {
 		title: "Work",
 		type: "page"
+	},
+	Seoul: {
+		title: "42 SEOUL",
+		type: "page"
 	}
 };
