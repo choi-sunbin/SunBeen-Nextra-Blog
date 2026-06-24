@@ -1,0 +1,159 @@
+# Jenkins Pipe Line
+
+
+
+![00_Jenkins.png](./00_Jenkins.png)
+ - Create a Job 선택
+
+
+### Jenkins Pipe Line
+
+#### PIPE Line 설정 
+![01_Jenkins_Pipe_Line.png](./01_Jenkins_Pipe_Line.png)
+
+### Jenkins Groovy 예시
+
+```
+    GitHub에서 소스 가져오기 
+    → Maven 빌드
+    → jar 파일을 원격 서버로 복사 
+    → 원격 서버에서 실행
+```
+
+```Groovy
+pipeline {
+    agent any
+
+    tools {
+        maven "M3" // Jenkins에서 설정한 Maven의 이름
+                   // Jenkins 관리 -> Tools -> Maven installations
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/lleellee0/deploy-test', branch: 'main'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                script {
+                    // mvn clean : 이전 빌드 결과물 삭제
+                    //             프로젝트의 target 폴더를 통째로 지운다.
+                    // mvn package : 소스코드 컴파일 및 실행 가능한 결과물 Jar 파일 생성
+                    sh 'mvn clean package'
+                }
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                script {
+                    // Maven 빌드로 생성된 jar 파일의 위치
+                    def jarFile = 'target/shortenurlservice-0.0.1-SNAPSHOT.jar'
+
+                    // 원격 배포 대상 서버 IP
+                    def serverIp = '45.76.231.32'
+
+                    // 원격 서버의 배포 경로
+                    def deployPath = '/root'
+
+                    // 원격 서버에서 실행할 명령어
+                    def runAppCommand = "java -jar $deployPath/shortenurlservice-0.0.1-SNAPSHOT.jar"
+                    
+                    // Jenkins 서버에 있는 jar 파일을 원격 서버 root 계정의 /root 경로로 복사
+                    // scp : SSH 기반 파일 복사 명령어
+                    // -o StrictHostKeyChecking=no 처음 접속할 때 묻는 finger print 생략
+                    sh "scp -o StrictHostKeyChecking=no $jarFile root@$serverIp:$deployPath/"
+                    
+                    // 원격 서버에서 애플리케이션 실행
+                    sshagent(['deploy_ssh_key']) { // 'server-ssh-credentials'는 Jenkins에서 설정한 credentials ID
+                        sh "ssh -o StrictHostKeyChecking=no root@$serverIp '$runAppCommand'"
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Deployment was successful.'
+        }
+        failure {
+            echo 'Deployment failed.'
+        }
+    }
+}
+```
+
+#### Tools -> Maven 설정
+![02_Jenkins_Tools_Maven.png](./02_Jenkins_Tools_Maven.png)
+
+
+### Jenkins 서버에서 SSH-KEY 생성하기
+
+ Jenkins 서버에서 Jenkins 컨테이너 접속
+ - docker exec -it 6a4741e77b80 sh
+ - docker ps
+    - CONTAINER ID : 6a4741e77b80
+
+```sh
+ssh-keygen -t rsa -b 4096
+```
+
+ - Jenkins 서버 Jenkins 컨테이너의 공개키 : /var/jenkins_home/.ssh/id_rsa.pub
+ - Jenkins 컨테이너의 공개키 -> Application 서버 
+
+![03_ssh_keygen.png](./03_ssh_keygen.png)
+
+```
+Jenkins Server 
+cat /var/jenkins_home/.ssh/id_rsa.pub
+  
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCVceAWNoiJls0FR3MbI/BgLpp+DJ0o4H9VolNHK6H0UcXIawiCTMqNBiLr93B5DBo/OL89OYY216lVfFAYez2v9yzSIiPRM/CIlMtOom5DAZTnnfwon8L8u6HKqrHOIhEbLnqa3g4Gh1pLeZ6KxL5tx25ECa1Uy/IRXodcRhH/QxtWNY1ScZC5jlonIXTgLfz8unZLDXI1v/fKSEH5cNK3sOx7sUEx6a+dXRzZw14ylcs/VokRGE70pHyykW4wXAufUIj+ceQ+8t5I/kxPfjoYZkqOZmpOz+AAqT6DO6YG3oBrfSGTh6tFRzxsm1/JHba2P1dRISQPD+nIMbHhqNOFTzLCuaH19HNb1eqSKBr2gLKvE/ot47puMA7dv/z0lmigt3JBfPohpDV79GDXxjcQk9Z+dVYnUiD20nNCiowYkwOwXAHM7UxOAIQaaTWhtXj9ibAL7kO5/Z3I2UdGdIEz7E46+1WY9EZaOB6+uW9xENE0IXPu9vqLWWVtdu0xGfZgAVMbIoOttWiDJkX5MX+f+8pVVQH2a0k42SvdyhgUVi8GDyb+I62AL0JDfrPXkYxlCSkQfRnq6ETxzm011csmmf5m4vFEQmYy+Om5/NUXbBXtF+WI50Oa5p/sjvTBF2GXo7fzUFtZIlGsPLaZ9A9VE64KX56StP7La83eRf9sUw== jenkins@6a4741e77b80
+ 
+Application Server
+ 
+vi ~/.ssh/authorized_keys -> SSH 키 붙여넣기
+```
+
+
+
+### sshagent 설치 
+
+![04_Jenkins_Plugins.png](./04_Jenkins_Plugins.png)
+
+
+![05_Jenkins_Download_sshagent.png](./05_Jenkins_Download_sshagent.png)
+
+```
+
+cat /var/jenkins_home/.ssh/id_rsa
+
+```
+
+#### sshagent 적용하기
+![06_Jenkins_Credentials.png](./06_Jenkins_Credentials.png)
+
+
+![07_Jenkins_Add_Credential.png](./07_Jenkins_Add_Credential.png)
+
+
+![08_Jenkins_Add_Credential.png](./08_Jenkins_Add_Credential.png)
+
+
+
+### Java 버전 설치
+
+#### Java Error (자바 설치 필요)
+![09_Java_Failed.png](./09_Java_Failed.png)
+
+```sh
+
+# Rocky Linux 9
+sudo dnf install java-17-openjdk
+
+# Rocky Linux 10
+sudo dnf install java-21-openjdk
+```

@@ -26,13 +26,13 @@ const ProgressColors: Record<ProgressStatus, string> = {
 
 const TECH_STACK: MilestoneItem[] = [
   { name: "Docker", icon: "/assets/docker.svg", progress: "completed" },
-  // { name: "Jenkins", icon: "/assets/jenkins.svg", progress: "pending" },
-  { name: "Kubernetes", icon: "/assets/kubernetes.svg", progress: "progress" },
+  { name: "Kubernetes", icon: "/assets/kubernetes.svg", progress: "completed" },
+  { name: "Jenkins", icon: "/assets/jenkins.svg", progress: "pending" },
   { name: "AWS", icon: "/assets/aws.svg", progress: "pending" },
 ];
 
 const CERTIFICATE_STACK: MilestoneItem[] = [
-  { name: "CKA", icon: "/assets/cka.webp", progress: "pending" },
+  { name: "CKA", icon: "/assets/cka.webp", progress: "completed" },
   { name: "AWS SAA", icon: "/assets/AWS-SAA.png", progress: "pending" },
 ];
 
@@ -112,6 +112,11 @@ export function RoadMapSection() {
             <MileStoneSection stack={TECH_STACK} />
             <h3 className="text-2xl py-4 font-medium">목표</h3>
             <MileStoneSection stack={CERTIFICATE_STACK} />
+            <br />
+            <div className="flex items-center  justify-center flex-wrap gap-4 pb-5 border-b border-gray-600">
+    
+            <Image src="/CKA_ChoiSunbin.png" alt="CKA_ChoiSunbin.png" width={400} height={400} className="mx-2" />
+            </div>      
           </div>
         </div>
       </div>
