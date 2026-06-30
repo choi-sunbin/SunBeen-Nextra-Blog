@@ -8,8 +8,8 @@ export default {
 		title: "Documents",
 		type: "page"
 	},
-	work: {
-		title: "Work",
+	portfolio: {
+		title: "Portfolio",
 		type: "page"
 	},
 	Seoul: {
