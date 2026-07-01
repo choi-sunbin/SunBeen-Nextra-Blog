@@ -17,7 +17,7 @@ const navbar = (
   <Navbar
     logo={
       <>
-        <Image
+        <Image  
           width={36}
           height={36}
           src={"https://img.icons8.com/?size=100&id=tvOT5hDemP8M&format=png&color=000000"}
@@ -86,10 +86,10 @@ export default async function RootLayout({
             footer={footer}
             // ... Your additional layout options
           >
-            <Analytics />
             {children}
           </Layout>
         </div>
+            <Analytics />
       </body>
     </html>
   );
