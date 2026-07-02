@@ -29,3 +29,7 @@ body {
 .nextra-toc > div > p {
     color: #ffffff;
 }
+
+a[aria-current="true"] {
+    color: #ffffff !important;
+}
