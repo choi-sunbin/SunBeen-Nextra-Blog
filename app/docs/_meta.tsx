@@ -5,5 +5,4 @@ export default {
   Jenkins_Test:"Jenkins CI/CD 테스트",
   Typescript: "구 Typescript",
   Javascript: "구 Javascript",
-
 };
